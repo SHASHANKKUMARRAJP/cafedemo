@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Reserve Your Table at DineCraft - Reserve your seat for an unforgettable culinary experience. We look forward to welcoming you.">
+    <title>Reserve Your Table | DineCraft Fine Dining & Cafe</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="index.css?v=2">
+</head>
+<body class="page-booking">
+
+    <!-- Header & Sticky Navigation Bar -->
+    <header class="site-header scrolled" id="siteHeader">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo">
+                <span class="logo-text">DINE CRAFT</span>
+                <span class="logo-sub">FINE DINING & CAFE</span>
+            </a>
+
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="booking.html" class="nav-link active">Booking</a></li>
+                    <li><a href="index.html#signatures" class="nav-link">Chef Specials</a></li>
+                    <li><a href="index.html#private-dining" class="nav-link">Private Dining</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a href="booking.html" class="btn btn-gold">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Reserve a Table</span>
+                </a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="page-main-content">
+        <!-- Page Hero Banner -->
+        <section class="page-hero-section">
+            <div class="container text-center">
+                <h1 class="page-hero-title">Reserve Your Table</h1>
+                <p class="page-hero-subtitle">
+                    Reserve your seat for an unforgettable culinary experience. We look forward to welcoming you.
+                </p>
+            </div>
+        </section>
+
+        <!-- Booking Two-Column Layout Section matching Reference Image 2 -->
+        <section class="booking-page-content">
+            <div class="container">
+                <div class="booking-two-column-grid">
+                    
+                    <!-- Left Column: Form Panel -->
+                    <div class="booking-form-panel">
+                        <h2 class="form-panel-title">Reservation Details</h2>
+                        
+                        <form id="standaloneBookingForm" class="page-reservation-form">
+                            <!-- Full Name -->
+                            <div class="form-group-block">
+                                <label for="bkName">Full Name *</label>
+                                <input type="text" id="bkName" placeholder="John Doe" required>
+                            </div>
+
+                            <!-- Email & Phone Row -->
+                            <div class="form-row-2col">
+                                <div class="form-group-block">
+                                    <label for="bkEmail">Email *</label>
+                                    <input type="email" id="bkEmail" placeholder="john@example.com" required>
+                                </div>
+                                <div class="form-group-block">
+                                    <label for="bkPhone">Phone *</label>
+                                    <input type="tel" id="bkPhone" placeholder="+1 (555) 123-4567" required>
+                                </div>
+                            </div>
+
+                            <!-- Date & Time Row -->
+                            <div class="form-row-2col">
+                                <div class="form-group-block input-icon-group">
+                                    <label for="bkDate">Date *</label>
+                                    <div class="input-with-icon">
+                                        <input type="date" id="bkDate" required>
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group-block input-icon-group">
+                                    <label for="bkTime">Time *</label>
+                                    <div class="input-with-icon">
+                                        <select id="bkTime" required>
+                                            <option value="">Select Time Slot...</option>
+                                            <option value="12:00 PM">12:00 PM (Lunch)</option>
+                                            <option value="01:30 PM">01:30 PM (Lunch)</option>
+                                            <option value="06:00 PM">06:00 PM (Dinner)</option>
+                                            <option value="07:30 PM" selected>07:30 PM (Dinner Prime)</option>
+                                            <option value="09:00 PM">09:00 PM (Late Dining)</option>
+                                        </select>
+                                        <i class="fa-regular fa-clock"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Guests Dropdown -->
+                            <div class="form-group-block input-icon-group">
+                                <label for="bkGuests">Number of Guests *</label>
+                                <div class="input-with-icon">
+                                    <select id="bkGuests" required>
+                                        <option value="2">2 Guests (Intimate)</option>
+                                        <option value="4" selected>4 Guests (Standard Table)</option>
+                                        <option value="6">6 Guests (Group)</option>
+                                        <option value="8">8 Guests (Large Group)</option>
+                                    </select>
+                                    <i class="fa-solid fa-user-group"></i>
+                                </div>
+                                <span class="form-sub-note">For parties of 10 or more, please call us directly</span>
+                            </div>
+
+                            <!-- Special Requests -->
+                            <div class="form-group-block">
+                                <label for="bkNotes">Special Requests</label>
+                                <textarea id="bkNotes" rows="3" placeholder="Dietary restrictions, special occasions, seating preferences..."></textarea>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-gold btn-block margin-top-md">
+                                Confirm Reservation
+                            </button>
+
+                            <span class="required-note">* Required fields</span>
+                        </form>
+
+                        <!-- Success Confirmation Screen (hidden by default) -->
+                        <div id="pageBookingSuccess" class="booking-success-view hidden">
+                            <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+                            <h3>Table Reserved Successfully!</h3>
+                            <p>A confirmation email and SMS have been dispatched.</p>
+                            <div class="booking-summary-card">
+                                <div class="summary-line"><span>Booking Ref:</span> <strong id="pConfRef">#DC-8492</strong></div>
+                                <div class="summary-line"><span>Guest Name:</span> <strong id="pConfName">John Doe</strong></div>
+                                <div class="summary-line"><span>Date & Time:</span> <strong id="pConfDateTime">Today at 7:30 PM</strong></div>
+                                <div class="summary-line"><span>Party Size:</span> <strong id="pConfGuests">4 Guests</strong></div>
+                            </div>
+                            <button id="resetBookingBtn" class="btn btn-outline-gold margin-top-md">Make Another Reservation</button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Info Cards -->
+                    <div class="booking-info-sidebar">
+                        
+                        <!-- Top Ambient Image Banner -->
+                        <div class="sidebar-image-card">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=80" alt="Candlelight Restaurant Ambience">
+                        </div>
+
+                        <!-- Reservation Information Card -->
+                        <div class="sidebar-info-card">
+                            <h3 class="sidebar-card-title">Reservation Information</h3>
+                            <ul class="info-bullet-list">
+                                <li><span class="bullet-dot"></span> Reservations are held for 15 minutes past the booking time</li>
+                                <li><span class="bullet-dot"></span> Parties of 10 or more, please call us directly</li>
+                                <li><span class="bullet-dot"></span> You will receive a confirmation within 2 minutes via SMS or WhatsApp</li>
+                                <li><span class="bullet-dot"></span> Please inform us of any dietary restrictions or special occasions</li>
+                            </ul>
+                        </div>
+
+                        <!-- Need Assistance? Card -->
+                        <div class="sidebar-info-card">
+                            <h3 class="sidebar-card-title">Need Assistance?</h3>
+                            <ul class="assistance-list">
+                                <li><strong>Phone:</strong> <a href="tel:+12125551234">+1 (212) 555-1234</a></li>
+                                <li><strong>WhatsApp:</strong> <a href="https://wa.me/12125551234" target="_blank">+1 (212) 555-1234</a></li>
+                                <li><strong>Email:</strong> <a href="mailto:reservations@dinecraft.com">reservations@dinecraft.com</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col brand-col">
+                        <h3 class="footer-logo">DineCraft</h3>
+                        <p class="footer-tagline">Crafted cuisine. Thoughtful ambience. Unforgettable evenings.</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="menu.html">Menu</a></li>
+                            <li><a href="booking.html">Booking</a></li>
+                            <li><a href="index.html#ambience">Gallery</a></li>
+                            <li><a href="index.html#contact">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Opening Hours</h4>
+                        <ul class="hours-list">
+                            <li><span>Mon–Thu</span> <span>11am – 10pm</span></li>
+                            <li><span>Fri–Sat</span> <span>11am – 12am</span></li>
+                            <li><span>Sunday</span> <span>Closed</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col contact-col">
+                        <h4 class="footer-heading">Contact Us</h4>
+                        <ul class="contact-info">
+                            <li><i class="fa-solid fa-location-dot"></i> 123 Culinary Street, New York, NY 10001</li>
+                            <li><i class="fa-solid fa-phone"></i> +1 (212) 555-1234</li>
+                            <li><i class="fa-solid fa-envelope"></i> info@dinecraft.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container copyright-bar">
+                <p>&copy; 2026 DineCraft. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <span>•</span>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script for Booking -->
+    <script src="booking.js"></script>
+</body>
+</html>
