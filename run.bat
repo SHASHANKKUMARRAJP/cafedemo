@@ -1,33 +1,13 @@
 @echo off
-title Cafe Demo - Local Server
+title Cafe Demo - Launching...
 echo.
 echo  ========================================
-echo    Cafe Demo - Starting Local Server...
+echo    Cafe Demo - Opening in Browser...
 echo  ========================================
 echo.
-
-REM Check if Python is installed
-python --version >nul 2>&1
-IF %ERRORLEVEL% EQU 0 (
-    echo  [OK] Python found! Starting server on http://localhost:8000
-    echo  [INFO] Press CTRL+C to stop the server.
-    echo.
-    start "" http://localhost:8000
-    python -m http.server 8000
-) ELSE (
-    REM Try python3
-    python3 --version >nul 2>&1
-    IF %ERRORLEVEL% EQU 0 (
-        echo  [OK] Python3 found! Starting server on http://localhost:8000
-        echo  [INFO] Press CTRL+C to stop the server.
-        echo.
-        start "" http://localhost:8000
-        python3 -m http.server 8000
-    ) ELSE (
-        echo  [WARN] Python not found. Opening index.html directly in browser...
-        echo.
-        start "" "%~dp0index.html"
-    )
-)
-
-pause
+echo  [OK] Launching index.html in your default browser...
+echo.
+start "" "%~dp0index.html"
+echo  [DONE] Cafe Demo is now open!
+echo.
+timeout /t 3 >nul
