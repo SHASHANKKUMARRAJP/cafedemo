@@ -378,4 +378,101 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => toast.remove(), 400);
         }, 3500);
     }
+
+    // --- 9. Auto-scrolling Review Carousel ---
+    const reviewsData = [
+        { initials: 'SM', name: 'Sarah Mitchell', role: 'Culinary Food Critic', stars: 5, text: '"An extraordinary dining experience. Every detail is impeccable — from the Truffle Alfredo to the perfectly curated wine list. DineCraft is in a league of its own."' },
+        { initials: 'JC', name: 'James Chen', role: 'Regular Guest & Entrepreneur', stars: 5, text: '"Our go-to for every anniversary. The Wagyu Ribeye is consistently exceptional and the sommelier\'s wine pairings never disappoint. A truly world-class restaurant."' },
+        { initials: 'ER', name: 'Emily Rodriguez', role: 'Wine Enthusiast', stars: 5, text: '"The Friday Jazz Nights are magical. Smooth jazz, expertly crafted cocktails, and incredible ambience. Chef Marco\'s desserts are simply divine."' },
+        { initials: 'DL', name: 'David Laurent', role: 'Food & Travel Writer', stars: 5, text: '"I\'ve dined at Michelin-starred restaurants across Europe, and DineCraft holds its own beautifully. The Private Dining Emerald Suite is an unparalleled experience."' },
+        { initials: 'AP', name: 'Arjun Patel', role: 'Corporate Events Director', stars: 5, text: '"Booked the Garden Terrace for our company dinner — flawless. 45 guests, impeccable service, and every single dish was a conversation starter. Will be back."' },
+        { initials: 'NS', name: 'Natalie Svensson', role: 'Chef & Food Blogger', stars: 5, text: '"As a chef myself, I pay attention to technique. DineCraft\'s kitchen demonstrates extraordinary precision and creativity. The Burrata starter is a masterclass in simplicity."' },
+        { initials: 'MK', name: 'Marcus Klein', role: 'Luxury Travel Reviewer', stars: 5, text: '"Visited during a New York trip — DineCraft was the highlight. From the glowing signboard ambience to the 24k Gold Lava Cake, every moment was Instagram-worthy and delicious."' },
+    ];
+
+    const track = document.getElementById('reviewsTrack');
+    const dotsContainer = document.getElementById('carouselDots');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+
+    if (track) {
+        // Render cards
+        track.innerHTML = reviewsData.map(r => `
+            <div class="review-card">
+                <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+                <div class="review-stars">
+                    ${'<i class="fa-solid fa-star"></i>'.repeat(r.stars)}
+                </div>
+                <p class="review-text">${r.text}</p>
+                <div class="reviewer">
+                    <div class="avatar-circle">${r.initials}</div>
+                    <div class="reviewer-info">
+                        <strong class="reviewer-name">${r.name}</strong>
+                        <span class="reviewer-role">${r.role}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Build dots
+        reviewsData.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', `Review ${i + 1}`);
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        let currentSlide = 0;
+        let autoInterval;
+        const CARD_WIDTH = 340 + 24; // card width + gap
+        const VISIBLE = 3; // visible cards
+        const MAX_SLIDE = reviewsData.length - VISIBLE;
+
+        function goToSlide(idx) {
+            currentSlide = Math.max(0, Math.min(idx, MAX_SLIDE));
+            track.style.transform = `translateX(-${currentSlide * CARD_WIDTH}px)`;
+            dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
+                d.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function startAuto() {
+            autoInterval = setInterval(() => {
+                goToSlide(currentSlide >= MAX_SLIDE ? 0 : currentSlide + 1);
+            }, 4000);
+        }
+
+        function stopAuto() { clearInterval(autoInterval); }
+
+        if (prevBtn) prevBtn.addEventListener('click', () => { stopAuto(); goToSlide(currentSlide - 1); startAuto(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { stopAuto(); goToSlide(currentSlide + 1); startAuto(); });
+
+        track.addEventListener('mouseenter', stopAuto);
+        track.addEventListener('mouseleave', startAuto);
+
+        goToSlide(0);
+        startAuto();
+    }
+
+    // --- 10. Floating Action Button (FAB) Toggle ---
+    const fabMain = document.getElementById('fabMain');
+    const fabOptions = document.getElementById('fabOptions');
+    const fabIcon = document.getElementById('fabIcon');
+
+    if (fabMain) {
+        fabMain.addEventListener('click', () => {
+            const isOpen = fabOptions.classList.toggle('open');
+            fabIcon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-headset';
+        });
+
+        // Close FAB when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#fabContainer')) {
+                fabOptions.classList.remove('open');
+                if (fabIcon) fabIcon.className = 'fa-solid fa-headset';
+            }
+        });
+    }
 });
+

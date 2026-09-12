@@ -1786,3 +1786,282 @@ button, input, select, textarea {
 }
 
 
+/* ==========================================================================
+   FAB — Floating Action Button (WhatsApp / Call / Reserve)
+   ========================================================================== */
+.fab-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 8000;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 0.8rem;
+}
+
+.fab-main {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--gold-gradient);
+    color: var(--bg-dark);
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(212,175,55,0.45);
+    transition: var(--transition);
+    border: none;
+    outline: none;
+}
+.fab-main:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 32px rgba(212,175,55,0.6);
+}
+
+.fab-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: flex-end;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: none;
+}
+.fab-options.open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.fab-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem 0.6rem 0.8rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.fab-option i { font-size: 1.1rem; }
+.fab-option:hover { transform: translateX(-4px) scale(1.03); }
+
+.fab-whatsapp {
+    background: #25D366;
+    color: #fff;
+}
+.fab-whatsapp:hover { background: #20b857; }
+
+.fab-call {
+    background: #3a8c6e;
+    color: #fff;
+}
+.fab-call:hover { background: #2d7059; }
+
+.fab-reserve {
+    background: var(--color-gold);
+    color: var(--bg-dark);
+}
+.fab-reserve:hover { background: var(--color-gold-bright); }
+
+.fab-label {
+    font-family: var(--font-body);
+    letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   Review Carousel — Auto-scrolling Testimonials
+   ========================================================================== */
+.reviews-section { overflow: hidden; }
+
+.reviews-carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.review-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    backdrop-filter: blur(8px);
+    min-width: 340px;
+    flex: 0 0 340px;
+    transition: var(--transition);
+    position: relative;
+}
+.review-card:hover {
+    border-color: var(--color-gold);
+    transform: translateY(-4px);
+    box-shadow: var(--gold-glow);
+}
+
+.reviews-carousel-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+.reviews-carousel-wrapper::before,
+.reviews-carousel-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+}
+.reviews-carousel-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-dark), transparent);
+}
+.reviews-carousel-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-dark), transparent);
+}
+
+.reviews-carousel-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.carousel-arrow {
+    background: rgba(13,36,28,0.8);
+    border: 1px solid var(--border-gold);
+    color: var(--color-gold);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+.carousel-arrow:hover {
+    background: var(--color-gold);
+    color: var(--bg-dark);
+}
+.carousel-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+.carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-gold-bright);
+    cursor: pointer;
+    transition: var(--transition);
+}
+.carousel-dot.active {
+    background: var(--color-gold);
+    width: 24px;
+    border-radius: var(--radius-pill);
+}
+
+/* ==========================================================================
+   Map & Location Section
+   ========================================================================== */
+.map-section {
+    padding: 5rem 0;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-gold);
+}
+.map-grid {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 3rem;
+    align-items: stretch;
+}
+.map-iframe-container {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-gold);
+    min-height: 400px;
+    position: relative;
+}
+.map-iframe-container iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    display: block;
+    border: none;
+    filter: invert(0.9) hue-rotate(160deg) saturate(0.5) brightness(0.7);
+}
+.map-info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.map-info-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-md);
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: var(--transition);
+}
+.map-info-card:hover {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 12px rgba(212,175,55,0.15);
+}
+.map-info-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(212,175,55,0.12);
+    border: 1px solid var(--border-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-gold);
+    font-size: 1rem;
+}
+.map-info-content h4 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-gold-light);
+    margin-bottom: 0.3rem;
+}
+.map-info-content p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+.map-info-content a {
+    color: var(--color-gold);
+    font-size: 0.88rem;
+}
+.map-info-content a:hover { color: var(--color-gold-bright); text-decoration: underline; }
+
+.directions-btn {
+    margin-top: auto;
+}
+
+@media (max-width: 960px) {
+    .map-grid { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   Page layout for sub-pages (about, gallery, wine-pairing)
+   ========================================================================== */
+.page-main-content {
+    padding-top: 70px;
+}
+

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Meet the Culinary Artist — Chef Marco Vellani. DineCraft's head chef with 20 years of Michelin-starred excellence. Discover our philosophy and story.">
+    <title>Chef's Story | DineCraft Fine Dining & Cafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="index.css?v=2">
+    <style>
+        /* ---- About Page Specific Styles ---- */
+        .about-hero {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #040e0a 0%, #071510 50%, #0a1f18 100%);
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;
+            opacity: 0.12;
+        }
+        .about-hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+        .about-hero-content h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 700;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        .about-hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Chef Profile */
+        .chef-profile-section {
+            padding: 6rem 0;
+            background: var(--bg-dark);
+        }
+        .chef-profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .chef-image-frame {
+            position: relative;
+        }
+        .chef-image-frame::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px solid var(--border-gold-bright);
+            border-radius: var(--radius-lg);
+            z-index: 0;
+        }
+        .chef-image-frame img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 560px;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-gold);
+            box-shadow: var(--shadow-card), var(--gold-glow);
+        }
+        .chef-award-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            z-index: 2;
+            background: linear-gradient(135deg, #1a3a28 0%, #0d2318 100%);
+            border: 2px solid var(--color-gold);
+            border-radius: 50%;
+            width: 130px;
+            height: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: var(--gold-glow);
+        }
+        .chef-award-badge i {
+            font-size: 1.8rem;
+            color: var(--color-gold);
+            margin-bottom: 4px;
+        }
+        .chef-award-badge span {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            color: var(--color-gold-light);
+            line-height: 1.3;
+            font-weight: 600;
+        }
+        .chef-bio h2 {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            color: var(--color-gold-light);
+            margin-bottom: 0.3rem;
+        }
+        .chef-bio .chef-title {
+            color: var(--color-gold);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .chef-bio p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+        }
+        .chef-stats-bar {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(13, 36, 28, 0.8);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md);
+        }
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Awards Grid */
+        .awards-section {
+            padding: 5rem 0;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-gold);
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .award-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        .award-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-gold);
+            box-shadow: var(--gold-glow);
+        }
+        .award-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .award-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .award-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Philosophy Section */
+        .philosophy-section {
+            padding: 5rem 0;
+            background: var(--bg-dark);
+        }
+        .philosophy-pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .pillar-card {
+            background: rgba(13, 36, 28, 0.7);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md);
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gold-gradient);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+        .pillar-card:hover::before { transform: scaleX(1); }
+        .pillar-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card);
+        }
+        .pillar-number {
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(212,175,55,0.08);
+            line-height: 1;
+            margin-bottom: -0.5rem;
+        }
+        .pillar-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-gold-light);
+            margin-bottom: 0.8rem;
+        }
+        .pillar-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 5rem 0;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-gold);
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .team-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .team-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card), var(--gold-glow);
+        }
+        .team-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+        .team-card-body {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .team-card-body h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+        .team-card-body .role {
+            color: var(--color-gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+        .team-card-body p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .chef-profile-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .awards-grid { grid-template-columns: repeat(2, 1fr); }
+            .philosophy-pillars { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .chef-image-frame img { height: 380px; }
+        }
+        @media (max-width: 600px) {
+            .awards-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+            .chef-stats-bar { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body class="page-about">
+
+    <!-- Header -->
+    <header class="site-header scrolled" id="siteHeader">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo">
+                <span class="logo-text">DINE CRAFT</span>
+                <span class="logo-sub">FINE DINING & CAFE</span>
+            </a>
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="booking.html" class="nav-link">Booking</a></li>
+                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="about.html" class="nav-link active">Our Story</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="booking.html" class="btn btn-gold">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Reserve a Table</span>
+                </a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-main-content">
+
+        <!-- About Hero -->
+        <section class="about-hero">
+            <div class="container about-hero-content">
+                <span class="gold-subtitle">EST. 2008 · NEW YORK</span>
+                <h1>The Art Behind<br>Every Plate</h1>
+                <p>Crafted with passion, guided by tradition, and elevated by innovation — this is the story of DineCraft.</p>
+            </div>
+        </section>
+
+        <!-- Chef Profile -->
+        <section class="chef-profile-section">
+            <div class="container">
+                <div class="chef-profile-grid">
+                    <div class="chef-image-frame">
+                        <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=1000&auto=format&fit=crop" alt="Executive Chef Marco Vellani">
+                        <div class="chef-award-badge">
+                            <i class="fa-solid fa-star"></i>
+                            <span>Michelin<br>Recognized<br>Chef</span>
+                        </div>
+                    </div>
+                    <div class="chef-bio">
+                        <span class="gold-subtitle">EXECUTIVE HEAD CHEF</span>
+                        <h2>Marco Vellani</h2>
+                        <p class="chef-title">20 Years of Culinary Mastery</p>
+                        <p>Born in Florence, Italy, Chef Marco Vellani's journey began in his grandmother's kitchen — a modest space that became the canvas for a legendary culinary career. Trained at the Institut Paul Bocuse in Lyon, France, Marco honed his craft under three Michelin-starred mentors before bringing his artistry to the stages of New York.</p>
+                        <p>His philosophy is simple yet profound: <em style="color: var(--color-gold-light);">"Every ingredient tells a story. My job is to let it speak beautifully."</em> At DineCraft, every dish is a living testament to that belief — seasonal, sustainable, and deeply considered.</p>
+                        <p>Marco's menus are driven by a relentless pursuit of balance — where bold flavors meet delicate technique, and where global inspirations are anchored by Italian culinary soul.</p>
+
+                        <div class="chef-stats-bar">
+                            <div class="stat-item">
+                                <span class="stat-number">20+</span>
+                                <span class="stat-label">Years of Craft</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">Countries Trained</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">11</span>
+                                <span class="stat-label">Awards Won</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">250k</span>
+                                <span class="stat-label">Guests Served</span>
+                            </div>
+                        </div>
+
+                        <a href="booking.html" class="btn btn-gold">
+                            <span>Book a Chef's Table Experience</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Awards -->
+        <section class="awards-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="gold-subtitle">RECOGNITION & HONOURS</span>
+                    <h2 class="section-title">Awards & Accolades</h2>
+                    <p class="section-description">A testament to our unwavering commitment to culinary excellence.</p>
+                </div>
+                <div class="awards-grid">
+                    <div class="award-card">
+                        <div class="award-icon"><i class="fa-solid fa-award"></i></div>
+                        <h3>Michelin Recognized</h3>
+                        <p>Highlighted in the Michelin Guide New York for culinary excellence since 2016.</p>
+                    </div>
+                    <div class="award-card">
+                        <div class="award-icon"><i class="fa-solid fa-trophy"></i></div>
+                        <h3>Best Fine Dining NYC</h3>
+                        <p>Winner of New York Culinary Guild's Best Fine Dining Restaurant 2022 & 2024.</p>
+                    </div>
+                    <div class="award-card">
+                        <div class="award-icon"><i class="fa-solid fa-leaf"></i></div>
+                        <h3>Sustainability Star</h3>
+                        <p>Certified by GreenDine for 95% locally-sourced, zero-waste kitchen practices.</p>
+                    </div>
+                    <div class="award-card">
+                        <div class="award-icon"><i class="fa-solid fa-wine-glass"></i></div>
+                        <h3>Wine Spectator Award</h3>
+                        <p>Excellence in Wine Cellar selection awarded by Wine Spectator magazine 2023.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Philosophy -->
+        <section class="philosophy-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="gold-subtitle">OUR CORE BELIEFS</span>
+                    <h2 class="section-title">The DineCraft Philosophy</h2>
+                    <p class="section-description">Three principles guide everything we do — from sourcing to plating.</p>
+                </div>
+                <div class="philosophy-pillars">
+                    <div class="pillar-card">
+                        <div class="pillar-number">01</div>
+                        <h3>Seasonal Integrity</h3>
+                        <p>We build our menus around what nature offers at its peak. Each season brings a new canvas, and we paint with the freshest, most vibrant ingredients available from our trusted local farm partners.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-number">02</div>
+                        <h3>Artisanal Precision</h3>
+                        <p>Every dish is a handcrafted creation — no shortcuts, no compromises. From hand-rolled pasta to slow-braised reductions, our kitchen operates with the discipline of a fine art studio.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-number">03</div>
+                        <h3>Soulful Hospitality</h3>
+                        <p>We believe dining is an act of connection. From the first greeting to the final farewell, every interaction is crafted to make you feel genuinely welcomed, valued, and cared for.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Team -->
+        <section class="team-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="gold-subtitle">THE CREATIVE MINDS</span>
+                    <h2 class="section-title">Meet Our Kitchen Team</h2>
+                    <p class="section-description">Behind every extraordinary dish is an extraordinary team.</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-card">
+                        <img src="https://images.unsplash.com/photo-1600565193348-f74bd3960d33?q=80&w=800&auto=format&fit=crop" alt="Sous Chef Elena Rossi">
+                        <div class="team-card-body">
+                            <h3>Elena Rossi</h3>
+                            <p class="role">Sous Chef — Pastry & Desserts</p>
+                            <p>Trained at Le Cordon Bleu Paris, Elena brings architectural elegance to every dessert. Her Pistachio Tart and Lava Cake have become DineCraft legends.</p>
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <img src="https://images.unsplash.com/photo-1615361200141-f45040f367be?q=80&w=800&auto=format&fit=crop" alt="Sommelier David Laurent">
+                        <div class="team-card-body">
+                            <h3>David Laurent</h3>
+                            <p class="role">Head Sommelier</p>
+                            <p>With 250+ labels in our cellar, David curates wine pairings that elevate each dish into a multi-sensory experience. His knowledge of rare Burgundian vintages is unmatched.</p>
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800&auto=format&fit=crop" alt="Chef de Partie Aiko Tanaka">
+                        <div class="team-card-body">
+                            <h3>Aiko Tanaka</h3>
+                            <p class="role">Chef de Partie — Japanese Fusion</p>
+                            <p>Aiko's precision with the knife and deep knowledge of Wagyu grading brings a distinctive Japanese artistry to DineCraft's signature meat dishes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col brand-col">
+                        <h3 class="footer-logo">DineCraft</h3>
+                        <p class="footer-tagline">Crafted cuisine. Thoughtful ambience. Unforgettable evenings.</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="#" aria-label="TripAdvisor"><i class="fa-brands fa-tripadvisor"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="menu.html">Menu</a></li>
+                            <li><a href="gallery.html">Gallery</a></li>
+                            <li><a href="booking.html">Booking</a></li>
+                            <li><a href="index.html#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Opening Hours</h4>
+                        <ul class="hours-list">
+                            <li><span>Mon – Thu</span> <span>11:00 AM – 10:00 PM</span></li>
+                            <li><span>Fri – Sat</span> <span>11:00 AM – 12:00 AM</span></li>
+                            <li><span>Sunday</span> <span>10:00 AM – 9:30 PM</span></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col contact-col">
+                        <h4 class="footer-heading">Contact Us</h4>
+                        <ul class="contact-info">
+                            <li><i class="fa-solid fa-location-dot"></i> 123 Culinary Street, New York, NY 10001</li>
+                            <li><i class="fa-solid fa-phone"></i> +1 (555) 382-9000</li>
+                            <li><i class="fa-solid fa-envelope"></i> info@dinecraft.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container copyright-bar">
+                <p>&copy; 2026 DineCraft Cafe & Dining. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <span>•</span>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp / Call Floating Button -->
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-main" id="fabMain" title="Contact Us">
+            <i class="fa-solid fa-headset" id="fabIcon"></i>
+        </div>
+        <div class="fab-options" id="fabOptions">
+            <a href="https://wa.me/15553829000" target="_blank" class="fab-option fab-whatsapp" title="Chat on WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span class="fab-label">WhatsApp</span>
+            </a>
+            <a href="tel:+15553829000" class="fab-option fab-call" title="Call Us">
+                <i class="fa-solid fa-phone"></i>
+                <span class="fab-label">Call Us</span>
+            </a>
+            <a href="booking.html" class="fab-option fab-reserve" title="Reserve a Table">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span class="fab-label">Reserve</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Nav Toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mainNav = document.getElementById('mainNav');
+        if (mobileToggle && mainNav) {
+            mobileToggle.addEventListener('click', () => {
+                mainNav.querySelector('.nav-list').classList.toggle('active');
+            });
+        }
+        // FAB
+        const fabMain = document.getElementById('fabMain');
+        const fabOptions = document.getElementById('fabOptions');
+        const fabIcon = document.getElementById('fabIcon');
+        fabMain.addEventListener('click', () => {
+            fabOptions.classList.toggle('open');
+            fabIcon.className = fabOptions.classList.contains('open') ? 'fa-solid fa-xmark' : 'fa-solid fa-headset';
+        });
+    </script>
+</body>
+</html>

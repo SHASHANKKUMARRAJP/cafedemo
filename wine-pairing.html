@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DineCraft Wine Pairing Recommender — Find the perfect wine to complement your dish. Guided by our award-winning sommelier David Laurent.">
+    <title>Wine Pairing | DineCraft Fine Dining & Cafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="index.css?v=2">
+    <style>
+        /* ---- Wine Pairing Page ---- */
+        .wine-hero {
+            position: relative;
+            min-height: 52vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #04080a 0%, #071510 100%);
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .wine-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;
+            opacity: 0.18;
+        }
+        .wine-hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+        .wine-hero-content h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        .wine-hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto 1.5rem;
+        }
+        .sommelier-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(13,36,28,0.8);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-pill);
+            padding: 0.6rem 1.4rem;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+        .sommelier-badge img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--color-gold);
+            object-fit: cover;
+        }
+        .sommelier-badge strong { color: var(--color-gold-light); }
+
+        /* Quiz Container */
+        .pairing-section {
+            padding: 5rem 0;
+            background: var(--bg-dark);
+        }
+        .pairing-quiz-container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 3rem;
+        }
+        .step-dot {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(13,36,28,0.9);
+            border: 2px solid var(--border-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+        .step-dot.active {
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+            box-shadow: 0 0 16px rgba(212,175,55,0.4);
+        }
+        .step-dot.done {
+            background: var(--color-gold);
+            border-color: var(--color-gold);
+            color: var(--bg-dark);
+        }
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border-gold);
+            max-width: 100px;
+        }
+        .step-line.done { background: var(--color-gold); }
+
+        /* Step Cards */
+        .quiz-step {
+            display: none;
+            animation: fadeSlideUp 0.4s ease forwards;
+        }
+        .quiz-step.active { display: block; }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-gold-light);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .step-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* Option Cards */
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+        }
+        .option-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+
+        .option-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-gold);
+            border-radius: var(--radius-md);
+            padding: 1.8rem 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .option-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gold-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .option-card:hover, .option-card.selected {
+            border-color: var(--color-gold);
+            transform: translateY(-4px);
+            box-shadow: var(--gold-glow);
+        }
+        .option-card.selected::before { opacity: 0.06; }
+        .option-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+        .option-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+            position: relative;
+            z-index: 1;
+        }
+        .option-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+        .option-card.selected h3 { color: var(--color-gold-light); }
+        .selected-checkmark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--color-gold);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .option-card.selected .selected-checkmark { opacity: 1; }
+
+        .quiz-nav {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+        }
+
+        /* Wine Result Card */
+        .wine-result-card {
+            background: linear-gradient(135deg, rgba(13,36,28,0.95) 0%, rgba(8,23,18,0.98) 100%);
+            border: 1px solid var(--color-gold);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--gold-glow), var(--shadow-card);
+        }
+        .wine-result-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+        }
+        .wine-result-img {
+            position: relative;
+        }
+        .wine-result-img img {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            object-fit: cover;
+        }
+        .wine-match-score {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--color-gold);
+            color: var(--bg-dark);
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            letter-spacing: 0.05em;
+        }
+        .wine-result-body {
+            padding: 2.5rem;
+        }
+        .wine-result-body .sommelier-note {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--border-gold);
+        }
+        .wine-name {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-gold-light);
+            margin-bottom: 0.3rem;
+        }
+        .wine-origin {
+            color: var(--color-gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+        .wine-desc {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .tasting-notes {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .tasting-note {
+            background: rgba(212,175,55,0.12);
+            border: 1px solid var(--border-gold);
+            color: var(--color-gold-light);
+            padding: 4px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+        }
+        .wine-pairing-for {
+            background: rgba(7,21,16,0.8);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .wine-pairing-for strong { color: var(--color-gold); }
+        .wine-result-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        /* Alt Suggestions */
+        .alt-suggestions {
+            margin-top: 3rem;
+        }
+        .alt-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .alt-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .alt-card:hover {
+            border-color: var(--color-gold);
+            box-shadow: 0 0 12px rgba(212,175,55,0.2);
+        }
+        .alt-card img {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin: 0 auto 0.8rem;
+            border: 1px solid var(--border-gold);
+        }
+        .alt-card h4 {
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+        .alt-card p { font-size: 0.78rem; color: var(--text-muted); }
+
+        @media (max-width: 900px) {
+            .option-grid { grid-template-columns: repeat(2, 1fr); }
+            .wine-result-grid { grid-template-columns: 1fr; }
+            .wine-result-img img { min-height: 240px; }
+            .alt-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .option-grid, .option-grid.two-col { grid-template-columns: 1fr; }
+            .alt-grid { grid-template-columns: 1fr; }
+            .step-line { max-width: 50px; }
+        }
+    </style>
+</head>
+<body class="page-wine">
+
+    <!-- Header -->
+    <header class="site-header scrolled" id="siteHeader">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo">
+                <span class="logo-text">DINE CRAFT</span>
+                <span class="logo-sub">FINE DINING & CAFE</span>
+            </a>
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="booking.html" class="nav-link">Booking</a></li>
+                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="about.html" class="nav-link">Our Story</a></li>
+                    <li><a href="wine-pairing.html" class="nav-link active">Wine Pairing</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="booking.html" class="btn btn-gold">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Reserve a Table</span>
+                </a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-main-content">
+
+        <!-- Hero -->
+        <section class="wine-hero">
+            <div class="container wine-hero-content">
+                <span class="gold-subtitle">SOMMELIER'S GUIDE</span>
+                <h1>Wine Pairing<br>Recommender</h1>
+                <p>Answer 3 simple questions and discover the perfect wine to complement your DineCraft dining experience.</p>
+                <div class="sommelier-badge">
+                    <img src="https://images.unsplash.com/photo-1615361200141-f45040f367be?q=80&w=100&auto=format&fit=crop" alt="Sommelier David Laurent">
+                    <span>Curated by <strong>David Laurent</strong>, Head Sommelier</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz -->
+        <section class="pairing-section">
+            <div class="container pairing-quiz-container">
+
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step-dot active" id="dot1">1</div>
+                    <div class="step-line" id="line1"></div>
+                    <div class="step-dot" id="dot2">2</div>
+                    <div class="step-line" id="line2"></div>
+                    <div class="step-dot" id="dot3">3</div>
+                    <div class="step-line" id="line3"></div>
+                    <div class="step-dot" id="dot4"><i class="fa-solid fa-wine-glass"></i></div>
+                </div>
+
+                <!-- Step 1: Dish Category -->
+                <div class="quiz-step active" id="step1">
+                    <h2 class="step-title">What are you dining on tonight?</h2>
+                    <p class="step-subtitle">Select the dish category you'll be enjoying</p>
+                    <div class="option-grid" id="categoryGrid">
+                        <div class="option-card" data-value="red-meat">
+                            <span class="option-card-icon">🥩</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Red Meat</h3>
+                            <p>Wagyu, Lamb, Duck, Beef</p>
+                        </div>
+                        <div class="option-card" data-value="seafood">
+                            <span class="option-card-icon">🐟</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Seafood & Fish</h3>
+                            <p>Salmon, Scallops, Sea Bass</p>
+                        </div>
+                        <div class="option-card" data-value="pasta">
+                            <span class="option-card-icon">🍝</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Pasta & Truffle</h3>
+                            <p>Tagliatelle, Risotto, Truffles</p>
+                        </div>
+                        <div class="option-card" data-value="dessert">
+                            <span class="option-card-icon">🍰</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Desserts</h3>
+                            <p>Chocolate, Tarts, Tiramisu</p>
+                        </div>
+                        <div class="option-card" data-value="vegetarian">
+                            <span class="option-card-icon">🥗</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Vegetarian</h3>
+                            <p>Salads, Mezze, Mushrooms</p>
+                        </div>
+                        <div class="option-card" data-value="cheese">
+                            <span class="option-card-icon">🧀</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Charcuterie & Cheese</h3>
+                            <p>Artisan boards, Aged cheeses</p>
+                        </div>
+                    </div>
+                    <div class="quiz-nav">
+                        <button class="btn btn-gold" id="step1Next" disabled>
+                            Continue <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Flavour Preference -->
+                <div class="quiz-step" id="step2">
+                    <h2 class="step-title">What flavours do you enjoy?</h2>
+                    <p class="step-subtitle">Choose your preferred wine flavour profile</p>
+                    <div class="option-grid two-col" id="flavourGrid">
+                        <div class="option-card" data-value="bold">
+                            <span class="option-card-icon">💪</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Bold & Full-Bodied</h3>
+                            <p>Rich, tannic, dark fruit, oak notes — wines with presence and structure</p>
+                        </div>
+                        <div class="option-card" data-value="light">
+                            <span class="option-card-icon">🌸</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Light & Elegant</h3>
+                            <p>Delicate, floral, red berries, silky finish — refined and food-friendly</p>
+                        </div>
+                        <div class="option-card" data-value="crisp">
+                            <span class="option-card-icon">🍋</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Crisp & Refreshing</h3>
+                            <p>Bright acidity, citrus, mineral, green apple — clean and lively</p>
+                        </div>
+                        <div class="option-card" data-value="sweet">
+                            <span class="option-card-icon">🍯</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Sweet & Luscious</h3>
+                            <p>Honey, dried fruits, dessert-style, off-dry — indulgent and rich</p>
+                        </div>
+                    </div>
+                    <div class="quiz-nav">
+                        <button class="btn btn-outline-gold" id="step2Back">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </button>
+                        <button class="btn btn-gold" id="step2Next" disabled>
+                            Continue <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Budget -->
+                <div class="quiz-step" id="step3">
+                    <h2 class="step-title">What's your wine budget?</h2>
+                    <p class="step-subtitle">We have exceptional bottles at every price point</p>
+                    <div class="option-grid" id="budgetGrid">
+                        <div class="option-card" data-value="accessible">
+                            <span class="option-card-icon">✨</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Accessible</h3>
+                            <p>Under $40 per glass — everyday celebration-worthy</p>
+                        </div>
+                        <div class="option-card" data-value="premium">
+                            <span class="option-card-icon">⭐</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Premium</h3>
+                            <p>$40–$100 per glass — exceptional quality and character</p>
+                        </div>
+                        <div class="option-card" data-value="luxury">
+                            <span class="option-card-icon">👑</span>
+                            <div class="selected-checkmark"><i class="fa-solid fa-check"></i></div>
+                            <h3>Cellar Reserve</h3>
+                            <p>$100+ per glass — rare vintages from our private cellar</p>
+                        </div>
+                    </div>
+                    <div class="quiz-nav">
+                        <button class="btn btn-outline-gold" id="step3Back">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </button>
+                        <button class="btn btn-gold" id="step3Next" disabled>
+                            <i class="fa-solid fa-wine-glass"></i> Reveal My Pairing
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Result -->
+                <div class="quiz-step" id="step4">
+                    <h2 class="step-title">Your Perfect Pairing</h2>
+                    <p class="step-subtitle">David Laurent's personal recommendation for your evening</p>
+                    <div class="wine-result-card" id="wineResult"></div>
+
+                    <div class="alt-suggestions">
+                        <h3 style="font-family: var(--font-heading); color: var(--text-secondary); font-size: 1.2rem; margin-bottom: 0.3rem;">
+                            <i class="fa-solid fa-rotate" style="color: var(--color-gold); margin-right: 0.5rem;"></i>
+                            Alternative Suggestions
+                        </h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0;">Other wines that pair beautifully with your selection</p>
+                        <div class="alt-grid" id="altGrid"></div>
+                    </div>
+
+                    <div class="quiz-nav" style="margin-top: 2rem;">
+                        <button class="btn btn-outline-gold" id="retakeQuiz">
+                            <i class="fa-solid fa-rotate-left"></i> Try Another Pairing
+                        </button>
+                        <a href="booking.html" class="btn btn-gold">
+                            <i class="fa-regular fa-calendar-check"></i> Book a Wine Dinner
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col brand-col">
+                        <h3 class="footer-logo">DineCraft</h3>
+                        <p class="footer-tagline">Crafted cuisine. Thoughtful ambience. Unforgettable evenings.</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="menu.html">Menu</a></li>
+                            <li><a href="gallery.html">Gallery</a></li>
+                            <li><a href="booking.html">Booking</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Opening Hours</h4>
+                        <ul class="hours-list">
+                            <li><span>Mon – Thu</span> <span>11:00 AM – 10:00 PM</span></li>
+                            <li><span>Fri – Sat</span> <span>11:00 AM – 12:00 AM</span></li>
+                            <li><span>Sunday</span> <span>10:00 AM – 9:30 PM</span></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col contact-col">
+                        <h4 class="footer-heading">Contact Us</h4>
+                        <ul class="contact-info">
+                            <li><i class="fa-solid fa-location-dot"></i> 123 Culinary Street, New York, NY 10001</li>
+                            <li><i class="fa-solid fa-phone"></i> +1 (555) 382-9000</li>
+                            <li><i class="fa-solid fa-envelope"></i> info@dinecraft.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container copyright-bar">
+                <p>&copy; 2026 DineCraft Cafe & Dining. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FAB -->
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-main" id="fabMain"><i class="fa-solid fa-headset" id="fabIcon"></i></div>
+        <div class="fab-options" id="fabOptions">
+            <a href="https://wa.me/15553829000" target="_blank" class="fab-option fab-whatsapp"><i class="fa-brands fa-whatsapp"></i><span class="fab-label">WhatsApp</span></a>
+            <a href="tel:+15553829000" class="fab-option fab-call"><i class="fa-solid fa-phone"></i><span class="fab-label">Call Us</span></a>
+            <a href="booking.html" class="fab-option fab-reserve"><i class="fa-regular fa-calendar-check"></i><span class="fab-label">Reserve</span></a>
+        </div>
+    </div>
+
+    <script>
+    // ---- Wine Pairing Data ----
+    const pairingDB = {
+        'red-meat': {
+            bold: {
+                accessible: { name: "Malbec Reserve", origin: "Mendoza, Argentina · 2020", price: "$32/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A powerful, velvety Malbec from Mendoza's high-altitude vineyards. Deep plum and dark cherry on the nose, followed by chocolate, tobacco, and a long smoky finish. Exceptional with the Wagyu Ribeye.", notes: ["Dark Plum", "Tobacco", "Dark Chocolate", "Smoky Oak"], pairedWith: "Miyazaki A5 Wagyu Ribeye or Herb-Crusted Rack of Lamb", score: "98% Match" },
+                premium: { name: "Château Pichon Baron", origin: "Pauillac, Bordeaux · 2017", price: "$75/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A second growth Pauillac of extraordinary complexity. Cassis, cedarwood, and pencil shavings weave into a silky palate of immense concentration. The ideal companion for aged red meats.", notes: ["Cassis", "Cedar", "Violet", "Fine Tannins"], pairedWith: "Wagyu Ribeye or Duck à l'Orange", score: "99% Match" },
+                luxury: { name: "Pétrus Grand Vin", origin: "Pomerol, Bordeaux · 2015", price: "$420/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "The iconic Pétrus from Pomerol — a wine of extraordinary depth and grace. 100% Merlot with notes of black truffle, mocha, and sweet violet. A once-in-a-lifetime experience.", notes: ["Black Truffle", "Mocha", "Sweet Violet", "Silk"], pairedWith: "Chef's Wagyu Tasting Menu", score: "100% Match" }
+            },
+            light: {
+                accessible: { name: "Pinot Noir, Willamette", origin: "Oregon, USA · 2021", price: "$34/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A graceful Oregon Pinot with delicate red cherry, cranberry, and forest floor notes. Light tannins and refreshing acidity make it an elegant partner for lamb and duck.", notes: ["Red Cherry", "Cranberry", "Earth", "Spice"], pairedWith: "Herb-Crusted Rack of Lamb", score: "95% Match" },
+                premium: { name: "Côte de Nuits, Chambolle", origin: "Burgundy, France · 2018", price: "$80/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A pure, perfumed Burgundy from Chambolle-Musigny. Ethereal raspberry, rose petal, and silky tannins that caress the palate. Flawless with roasted lamb.", notes: ["Raspberry", "Rose Petal", "Forest Mushroom", "Velvet"], pairedWith: "Rack of Lamb or Duck", score: "98% Match" },
+                luxury: { name: "Romanée-Conti, DRC", origin: "Vosne-Romanée, Burgundy · 2016", price: "$900/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "The most celebrated wine in the world. DRC's flagship is a transcendent experience — layers of spice, sous bois, and red fruits that evolve over hours in the glass.", notes: ["Spice", "Sous Bois", "Morello Cherry", "Transcendent"], pairedWith: "Chef's Tasting Menu", score: "100% Match" }
+            },
+            crisp: { accessible: { name: "Sangiovese Rosso", origin: "Tuscany, Italy · 2022", price: "$28/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A lively Tuscan Sangiovese with bright cherry, earthy notes and vivid acidity. Its freshness cuts beautifully through rich red meat dishes.", notes: ["Sour Cherry", "Earthy", "Herbs", "Fresh Acidity"], pairedWith: "Wagyu or Lamb", score: "92% Match" }, premium: { name: "Barolo DOCG", origin: "Piedmont, Italy · 2017", price: "$65/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "The king of Italian wines — Barolo's trademark tar, roses, and vibrant acidity make it one of the finest companions to grilled and braised meats.", notes: ["Tar", "Roses", "Cherry", "Leather"], pairedWith: "Wagyu Ribeye", score: "97% Match" }, luxury: { name: "Barolo Monfortino Riserva", origin: "Piedmont · Giacomo Conterno · 2013", price: "$250/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "Giacomo Conterno's legendary Monfortino — a Barolo of monumental structure and grace. Over a decade of ageing yields extraordinary complexity.", notes: ["Tar", "Iron", "Rose", "Eternal Finish"], pairedWith: "Wagyu Tasting Menu", score: "100% Match" }},
+            sweet: { accessible: { name: "Amarone della Valpolicella", origin: "Veneto, Italy · 2019", price: "$38/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A rich, opulent Amarone made from dried Corvina grapes. Plum, prune, and dark chocolate with a velvety, full-bodied finish that complements braised short rib beautifully.", notes: ["Prune", "Dark Chocolate", "Fig", "Velvet"], pairedWith: "Slow-Braised Short Rib or Lamb", score: "94% Match" }, premium: { name: "Zinfandel Old Vine", origin: "Sonoma, California · 2020", price: "$48/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "Old-vine California Zinfandel with jammy blackberry, pepper spice, and a lush plush texture that loves rich grilled meats.", notes: ["Blackberry Jam", "Pepper", "Vanilla", "Lush"], pairedWith: "Wagyu or BBQ Lamb", score: "93% Match" }, luxury: { name: "Châteauneuf-du-Pape", origin: "Rhône Valley, France · 2015", price: "$110/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "Château Rayas' masterpiece from the Rhône — predominantly Grenache, producing a wine of extraordinary richness, spice, and warmth. Legendary with lamb.", notes: ["Wild Berry", "Garrigue", "Leather", "Spice"], pairedWith: "Rack of Lamb", score: "99% Match" }}
+        },
+        'seafood': {
+            crisp: { accessible: { name: "Sancerre Sauvignon Blanc", origin: "Loire Valley, France · 2022", price: "$36/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A benchmark Loire Sancerre with laser-sharp gooseberry, grassy notes, and mineral flint. The classic companion to our Grilled Citrus Salmon.", notes: ["Gooseberry", "Flint Mineral", "Citrus Zest", "Grassy"], pairedWith: "Grilled Citrus Salmon or Scallops", score: "98% Match" }, premium: { name: "Puligny-Montrachet 1er Cru", origin: "Burgundy, France · 2020", price: "$90/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "From the hallowed village of Puligny — a Chardonnay of exceptional purity. Hazelnut, white flower, and citrus with immense mineral depth.", notes: ["Hazelnut", "White Flower", "Lemon Curd", "Mineral"], pairedWith: "Chilean Sea Bass or Scallops", score: "99% Match" }, luxury: { name: "Montrachet Grand Cru", origin: "Burgundy · DRC · 2018", price: "$350/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "The world's greatest white wine — Domaine de la Romanée-Conti's Montrachet. Luminous, electric, and breathtakingly complex. Reserve only.", notes: ["Toast", "Honey", "Almond", "Electric Acid"], pairedWith: "Chef's Seafood Tasting", score: "100% Match" }},
+            light: { accessible: { name: "Pinot Grigio, Alto Adige", origin: "Trentino, Italy · 2023", price: "$28/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A bright, clean Alto Adige Pinot Grigio with pear, white peach, and a delicate floral note. Refreshingly food-friendly with all seafood dishes.", notes: ["White Peach", "Pear", "Floral", "Almond"], pairedWith: "Seared Scallops or Salmon", score: "95% Match" }, premium: { name: "Chablis Grand Cru", origin: "Chablis, Burgundy · 2019", price: "$70/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A magnificent Grand Cru Chablis with intense oyster shell, green apple, and an electrifying acidity. Perfect for all shellfish and seared fish.", notes: ["Oyster Shell", "Green Apple", "Chalk", "Steel"], pairedWith: "Seared Scallops or Sea Bass", score: "98% Match" }, luxury: { name: "Corton-Charlemagne GC", origin: "Burgundy · 2017", price: "$180/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "One of Burgundy's most powerful Grand Cru whites. Intense, complex, and immortal — hazelnut, lime peel and brioche with a seamless finish.", notes: ["Hazelnut", "Lime", "Brioche", "Powerful"], pairedWith: "Chilean Sea Bass Risotto", score: "99% Match" }},
+            bold: { accessible: { name: "Viognier Reserve", origin: "Condrieu, Rhône · 2021", price: "$40/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "An aromatic, full-bodied Viognier with exotic peach, apricot, and a heady floral perfume. Its weight stands up beautifully to richer fish preparations.", notes: ["Peach", "Apricot Blossom", "White Pepper", "Creamy"], pairedWith: "Chilean Sea Bass or Salmon with cream sauce", score: "94% Match" }, premium: { name: "White Burgundy Meursault", origin: "Côte de Beaune · 2018", price: "$85/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Meursault at its finest — opulent, buttery Chardonnay with toasted almond, vanilla cream, and a beautifully long, textured finish.", notes: ["Toasted Almond", "Butter", "Vanilla", "Long Finish"], pairedWith: "Pan-seared Scallops", score: "97% Match" }, luxury: { name: "Domaine Leflaive Bâtard GC", origin: "Puligny, Burgundy · 2016", price: "$220/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Domaine Leflaive's iconic Bâtard-Montrachet. Grand Cru Chardonnay of immense richness and minerality — a once-in-a-lifetime pairing.", notes: ["White Truffle", "Lemon Oil", "Cream", "Transcendent"], pairedWith: "Chef's Seafood Table", score: "100% Match" }},
+            sweet: { accessible: { name: "Gewürztraminer Vendange", origin: "Alsace, France · 2022", price: "$30/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "An off-dry Alsatian Gewürztraminer with rose petal, lychee, and ginger spice. Wonderfully aromatic and refreshing alongside Asian-influenced seafood.", notes: ["Lychee", "Rose Petal", "Ginger", "Off-Dry"], pairedWith: "Asian-spiced Salmon", score: "91% Match" }, premium: { name: "Riesling Kabinett Spätlese", origin: "Mosel, Germany · 2021", price: "$52/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A brilliant off-dry Mosel Riesling — razor acidity, petrol, lime blossom, and green apple with just a touch of residual sweetness.", notes: ["Petrol", "Lime Blossom", "Slate", "Off-Dry"], pairedWith: "Sea Bass or Salmon", score: "96% Match" }, luxury: { name: "Château d'Yquem", origin: "Sauternes, Bordeaux · 2015", price: "$180/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "The king of Sauternes — Yquem's nectar of botrytized Semillon and Sauvignon Blanc. Honey, apricot, saffron, and an endless golden finish.", notes: ["Honey", "Apricot", "Saffron", "Eternal"], pairedWith: "Foie Gras or Pan-seared Scallops", score: "100% Match" }}
+        },
+        'pasta': {
+            bold: { accessible: { name: "Barolo DOCG", origin: "Piedmont, Italy · 2018", price: "$45/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "The king of Italian wines — Barolo's robust tar, roses, and cherry character pairs magnificently with truffle-based pasta dishes.", notes: ["Tar", "Roses", "Red Cherry", "Earthy"], pairedWith: "Truffle Alfredo Tagliatelle", score: "97% Match" }, premium: { name: "Brunello di Montalcino", origin: "Tuscany · Biondi-Santi · 2016", price: "$120/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "Biondi-Santi's legendary Brunello — powerful, noble, and enduring. Its wild cherry and earthy depth is extraordinary with black truffle pasta.", notes: ["Wild Cherry", "Earth", "Iron", "Tobacco"], pairedWith: "Truffle Tagliatelle", score: "99% Match" }, luxury: { name: "Sassicaia DOC", origin: "Bolgheri, Tuscany · 2015", price: "$200/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "The original Super Tuscan. Sassicaia's Cabernet Sauvignon blend — cassis, eucalyptus, cedar — is one of Italy's most prestigious reds.", notes: ["Cassis", "Eucalyptus", "Cedar", "Dark Plum"], pairedWith: "Truffle-based Pasta", score: "98% Match" }},
+            light: { accessible: { name: "Chianti Classico DOCG", origin: "Tuscany, Italy · 2020", price: "$28/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A classic Chianti with tart cherry, herbs, and a lively acidity. The traditional companion to pasta — vibrant and food-friendly.", notes: ["Tart Cherry", "Herbs", "Earthy", "Lively"], pairedWith: "Pasta & Mushroom dishes", score: "93% Match" }, premium: { name: "Côte de Beaune Rouge", origin: "Burgundy, France · 2019", price: "$65/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "An elegant Pinot from Côte de Beaune — red fruit, mushroom, and silky tannins that complement truffle and cream-based pasta exquisitely.", notes: ["Red Fruit", "Mushroom", "Silky", "Earth"], pairedWith: "Truffle Tagliatelle", score: "96% Match" }, luxury: { name: "Gevrey-Chambertin 1er Cru", origin: "Burgundy · 2017", price: "$150/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A premier cru from Gevrey-Chambertin — powerful yet refined, with earthy spice and a stunning truffle note that echoes the pasta's black truffle shavings.", notes: ["Truffle", "Earthy Spice", "Cherry", "Structured"], pairedWith: "Truffle Tagliatelle", score: "100% Match" }},
+            crisp: { accessible: { name: "Verdicchio dei Castelli", origin: "Marche, Italy · 2023", price: "$22/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A crisp, clean Italian white with bitter almond, citrus, and herbal notes. Its freshness balances rich cream-based pasta beautifully.", notes: ["Bitter Almond", "Citrus", "Herbs", "Clean"], pairedWith: "Truffle Alfredo Tagliatelle", score: "91% Match" }, premium: { name: "Gavi di Gavi DOCG", origin: "Piedmont, Italy · 2022", price: "$40/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Cortese grape at its finest — delicate, mineral, and refreshing with green apple and lemon peel. A great Piedmontese white for pasta.", notes: ["Green Apple", "Lemon Peel", "Mineral", "Delicate"], pairedWith: "Truffle Pasta or Risotto", score: "93% Match" }, luxury: { name: "Hermitage Blanc", origin: "Rhône Valley, France · 2018", price: "$120/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A rare and magnificent white Hermitage from the Rhône — Marsanne grape at peak expression, with quince, beeswax and extraordinary depth.", notes: ["Quince", "Beeswax", "Hazelnut", "Profound"], pairedWith: "Cream Truffle Pasta", score: "97% Match" }},
+            sweet: { accessible: { name: "Malvasia delle Lipari", origin: "Sicily, Italy · 2022", price: "$24/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A lightly sweet Sicilian Malvasia — apricot, orange blossom, and honey with a refreshing finish. Lovely with mushroom risotto.", notes: ["Apricot", "Orange Blossom", "Honey", "Light Sweet"], pairedWith: "Mushroom Risotto or mild pasta", score: "88% Match" }, premium: { name: "Vouvrau Demi-Sec", origin: "Loire Valley, France · 2020", price: "$45/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Chenin Blanc from Vouvray in demi-sec style — quince, honey, and vibrant acidity. An unexpected but brilliant companion to earthy pasta dishes.", notes: ["Quince", "Honey", "Peach", "Bright Acid"], pairedWith: "Truffle or Mushroom Pasta", score: "90% Match" }, luxury: { name: "Château Climens Sauternes", origin: "Barsac, Bordeaux · 2014", price: "$110/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Château Climens' Barsac — lighter than Yquem but equally complex. Lemon curd, ginger, and botrytis with a brilliant acid backbone.", notes: ["Lemon Curd", "Ginger", "Botrytis", "Complex"], pairedWith: "Truffle Pasta or Cheese", score: "95% Match" }}
+        },
+        'dessert': {
+            sweet: { accessible: { name: "Tawny Port 20-Year", origin: "Douro Valley, Portugal", price: "$24/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A 20-year Tawny Port with caramel, walnut, and dried fig. Its oxidative richness is a sublime companion to dark chocolate desserts.", notes: ["Caramel", "Walnut", "Dried Fig", "Coffee"], pairedWith: "Belgian Chocolate Lava Cake", score: "99% Match" }, premium: { name: "Vintage Port", origin: "Quinta do Crasto · Douro · 2011", price: "$65/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A powerful Vintage Port from the Douro — blackberry jam, dark chocolate, and violet with a decadent, warming finish.", notes: ["Blackberry", "Dark Chocolate", "Violet", "Warming"], pairedWith: "Chocolate Lava Cake or Tiramisu", score: "99% Match" }, luxury: { name: "Château d'Yquem", origin: "Sauternes, Bordeaux · 2015", price: "$180/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "The king of Sauternes — Yquem's legendary nectar. Honey, apricot, saffron, and crème brûlée. The only wine that can stand alongside the finest desserts.", notes: ["Honey", "Apricot", "Saffron", "Crème Brûlée"], pairedWith: "Pistachio Tart or Tiramisu", score: "100% Match" }},
+            bold: { accessible: { name: "Banyuls Grand Cru", origin: "Roussillon, France", price: "$26/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "France's answer to Port — a fortified Grenache with dark cherry, chocolate, and coffee. The classic French pairing with chocolate.", notes: ["Dark Cherry", "Chocolate", "Coffee", "Fortified"], pairedWith: "Belgian Chocolate Lava Cake", score: "97% Match" }, premium: { name: "Maury Pur Carignan", origin: "Roussillon · 2018", price: "$50/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A rare fortified Carignan from Maury — intense blackberry, licorice, and mineral intensity. Superb with intense chocolate desserts.", notes: ["Blackberry", "Licorice", "Mineral", "Intense"], pairedWith: "Dark Chocolate Desserts", score: "96% Match" }, luxury: { name: "Bual Madeira Reserve", origin: "Madeira, Portugal · 15-Year", price: "$90/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A 15-year Bual Madeira — one of the world's most immortal wines. Toffee, dried orange peel, and rancio notes with timeless acidity.", notes: ["Toffee", "Dried Orange", "Rancio", "Immortal"], pairedWith: "Chocolate or Nut Tarts", score: "99% Match" }},
+            crisp: { accessible: { name: "Moscato d'Asti DOCG", origin: "Piedmont, Italy · 2023", price: "$18/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A delicate, lightly sparkling Moscato — peach, apricot, and orange blossom with just 5.5% alcohol. Light and refreshing with fruit-based desserts.", notes: ["Peach", "Apricot", "Orange Blossom", "Sparkling"], pairedWith: "Pistachio Tart or Fruit Desserts", score: "95% Match" }, premium: { name: "Spätlese Riesling", origin: "Rheingau, Germany · 2019", price: "$42/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A Rheingau Spätlese Riesling with electric acidity, peach, grapefruit, and honey. Perfectly balanced for fruit-based desserts.", notes: ["Peach", "Grapefruit", "Honey", "Electric Acid"], pairedWith: "Pistachio & Raspberry Tart", score: "97% Match" }, luxury: { name: "Trockenbeerenauslese Riesling", origin: "Mosel, Germany · 2011", price: "$160/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Germany's rarest and most concentrated wine — individual dried berries produce an unparalleled nectar of honey, saffron, and exotic fruit.", notes: ["Honey", "Saffron", "Exotic Fruit", "Concentrated Nectar"], pairedWith: "Pistachio Tart or Light Desserts", score: "100% Match" }},
+            light: { accessible: { name: "Asti Spumante", origin: "Piedmont, Italy · 2023", price: "$16/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A fully sparkling Asti — jubilant, sweet, and fragrant with fresh grape and peach. A classic Italian pairing with Tiramisu.", notes: ["Fresh Grape", "Peach", "Light", "Sparkling"], pairedWith: "Deconstructed Tiramisu", score: "93% Match" }, premium: { name: "Champagne Rosé, Billecart-Salmon", origin: "Champagne, France", price: "$78/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Billecart-Salmon's iconic Rosé — fragrant strawberry, raspberry, and brioche with delicate bubbles. Extraordinary with fruit tarts and light desserts.", notes: ["Strawberry", "Raspberry", "Brioche", "Fine Bubbles"], pairedWith: "Pistachio & Raspberry Tart", score: "98% Match" }, luxury: { name: "Krug Grande Cuvée Rosé", origin: "Champagne, France · 169th Edition", price: "$160/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Krug's Grande Cuvée Rosé — a profound multi-vintage Champagne of extraordinary complexity. Red fruit, toasty brioche, and endless effervescence.", notes: ["Red Fruit", "Brioche", "Toasty", "Complex Bubbles"], pairedWith: "Any dessert at DineCraft", score: "100% Match" }}
+        },
+        'vegetarian': {
+            crisp: { accessible: { name: "Vermentino di Sardegna", origin: "Sardinia, Italy · 2023", price: "$24/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A vibrant Sardinian Vermentino — green herbs, citrus, and a pleasantly bitter almond finish. Fresh and lively with vegetable dishes.", notes: ["Citrus", "Green Herbs", "Almond", "Saline"], pairedWith: "Mediterranean Mezze or Salads", score: "95% Match" }, premium: { name: "Sancerre Blanc", origin: "Loire Valley, France · 2022", price: "$38/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "The benchmark Sauvignon Blanc — mineral, gooseberry, and fresh herbs. Absolutely vibrant alongside vegetarian starters and salads.", notes: ["Gooseberry", "Mineral", "Grass", "Lime"], pairedWith: "Burrata or Mezze Board", score: "97% Match" }, luxury: { name: "Chablis Grand Cru Valmur", origin: "Burgundy, France · 2019", price: "$110/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Grand Cru Chablis at its purest — oyster shell, chalk, and lemon with extraordinary mineral tension. Supreme with artisan vegetarian dishes.", notes: ["Chalk", "Oyster Shell", "Lemon", "Pure Mineral"], pairedWith: "Burrata & Heirloom Tomatoes", score: "99% Match" }},
+            light: { accessible: { name: "Pinot Grigio delle Venezie", origin: "Friuli, Italy · 2023", price: "$22/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A fresh, clean Friulian Pinot Grigio with white peach, almond, and light floral notes. A natural companion to vegetarian dishes.", notes: ["White Peach", "Almond", "Floral", "Clean"], pairedWith: "Salads or Mushroom dishes", score: "92% Match" }, premium: { name: "Chassagne-Montrachet", origin: "Burgundy, France · 2020", price: "$75/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A village Chassagne-Montrachet of delicate beauty — hazelnut, pear, and subtle oak with lovely freshness for vegetarian dishes.", notes: ["Hazelnut", "Pear", "Subtle Oak", "Fresh"], pairedWith: "Burrata or Mushroom Soup", score: "95% Match" }, luxury: { name: "Le Montrachet Grand Cru", origin: "Burgundy · Domaine Leflaive · 2018", price: "$300/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "The world's greatest dry white — Domaine Leflaive's Le Montrachet. Transcendent complexity that elevates any dish to celestial heights.", notes: ["Transcendent", "Complex", "Mineral", "Eternal"], pairedWith: "Chef's Vegetarian Tasting", score: "100% Match" }},
+            bold: { accessible: { name: "Grüner Veltliner Smaragd", origin: "Wachau, Austria · 2021", price: "$32/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Austria's flagship grape at Smaragd level — white pepper, citrus, and mineral depth with a full body perfect for rich vegetarian dishes.", notes: ["White Pepper", "Citrus", "Mineral", "Full Body"], pairedWith: "Mushroom Soup or Truffle Pasta", score: "94% Match" }, premium: { name: "Viognier Condrieu AC", origin: "Northern Rhône · 2021", price: "$55/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Condrieu Viognier at its most aromatic — an explosion of apricot, white flowers, and mango with a lush, full-bodied palate.", notes: ["Apricot", "White Flowers", "Mango", "Lush"], pairedWith: "Burrata with herbs", score: "96% Match" }, luxury: { name: "Hermitage Blanc JL Chave", origin: "Rhône Valley · 2017", price: "$180/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Jean-Louis Chave's legendary white Hermitage — Marsanne of unparalleled concentration, quince, golden honey, and profound mineral depth.", notes: ["Quince", "Golden Honey", "Beeswax", "Profound"], pairedWith: "Rich Vegetarian Mains", score: "99% Match" }},
+            sweet: { accessible: { name: "Rosé d'Anjou Demi-Sec", origin: "Loire, France · 2023", price: "$20/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A lightly sweet Loire Rosé with strawberry, watermelon, and subtle floral notes. Playful and charming with lighter vegetarian starters.", notes: ["Strawberry", "Watermelon", "Floral", "Light Sweet"], pairedWith: "Mezze Board or Salads", score: "88% Match" }, premium: { name: "Alsace Pinot Gris Vendange", origin: "Alsace, France · 2020", price: "$50/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "An off-dry Alsatian Pinot Gris with rich golden fruit, smoke, and honey — wonderful with vegetable-forward dishes that have some sweetness.", notes: ["Smoked Peach", "Honey", "Golden Fruit", "Off-Dry"], pairedWith: "Roasted Vegetable dishes", score: "93% Match" }, luxury: { name: "Château d'Yquem (Half Bottle)", origin: "Sauternes, Bordeaux · 2015", price: "$95/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Even a half-bottle of Yquem is a complete experience. Honey, apricot, saffron — a wine that transforms every dish around it.", notes: ["Honey", "Apricot", "Saffron", "Legendary"], pairedWith: "Any vegetarian dish at DineCraft", score: "98% Match" }}
+        },
+        'cheese': {
+            bold: { accessible: { name: "Vintage Tawny Port 10-Year", origin: "Douro Valley, Portugal", price: "$22/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A 10-year Tawny Port — hazelnut, caramel, and dried orange peel. The classic charcuterie and aged cheese companion.", notes: ["Hazelnut", "Caramel", "Orange Peel", "Nutty"], pairedWith: "Aged Cheddar & Charcuterie Board", score: "97% Match" }, premium: { name: "Amarone della Valpolicella", origin: "Veneto · Masi · 2018", price: "$62/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A powerful Amarone with prune, mocha, and bitter chocolate. Superb alongside aged Parmigiano, Pecorino, and cured meats.", notes: ["Prune", "Mocha", "Bitter Chocolate", "Full-Bodied"], pairedWith: "Aged Cheese & Cured Meats", score: "98% Match" }, luxury: { name: "Sauternes NV Vertical", origin: "Bordeaux · Chef's Cellar Selection", price: "$150/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A vertical flight from our cellar — Sauternes vintages from different years paired tableside with artisan cheeses by our sommelier.", notes: ["Multiple Vintages", "Honey", "Aged Complexity", "Tableside"], pairedWith: "Full Artisan Cheese Board", score: "100% Match" }},
+            light: { accessible: { name: "Beaujolais Villages", origin: "Burgundy, France · 2022", price: "$20/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A joyful, fruity Gamay from Beaujolais — fresh raspberry, violet, and banana notes. Light tannins make it perfect for fresh cheeses.", notes: ["Raspberry", "Violet", "Banana", "Light Tannins"], pairedWith: "Fresh Mozzarella or Burrata", score: "92% Match" }, premium: { name: "Chambolle-Musigny Village", origin: "Côte de Nuits · 2019", price: "$70/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "A delicate village Burgundy from Chambolle — raspberry, rose petal, and silky precision. Perfect for semi-hard cheeses and charcuterie.", notes: ["Raspberry", "Rose Petal", "Silky", "Precise"], pairedWith: "Semi-Hard Cheese & Pâté", score: "96% Match" }, luxury: { name: "Pommard 1er Cru Rugiens", origin: "Côte de Beaune · 2016", price: "$130/glass", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop", desc: "One of Pommard's finest premiers crus — powerful and deeply coloured for a Burgundy, with dark cherry, iron, and forest floor depth.", notes: ["Dark Cherry", "Iron", "Forest Floor", "Powerful"], pairedWith: "Aged Hard Cheese & Charcuterie", score: "98% Match" }},
+            crisp: { accessible: { name: "Champagne Brut NV", origin: "Reims, Champagne · Moët & Chandon", price: "$32/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Moët's iconic Brut — green apple, white peach, and brioche with lively bubbles. Champagne's acidity cuts through any cheese beautifully.", notes: ["Green Apple", "Brioche", "White Peach", "Lively Bubbles"], pairedWith: "Any Cheese Board", score: "94% Match" }, premium: { name: "Blanc de Blancs Grand Cru", origin: "Champagne · Taittinger Comtes · 2015", price: "$90/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "100% Chardonnay from Grand Cru vineyards — a crystalline, precise Champagne with chalk, lemon, and hazelnut. Exquisite with cheese.", notes: ["Chalk", "Lemon", "Hazelnut", "Crystalline"], pairedWith: "Goat Cheese or Fresh Chèvre", score: "97% Match" }, luxury: { name: "Krug Clos du Mesnil", origin: "Champagne, France · 2008", price: "$250/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Krug's single-vineyard blanc de blancs — arguably the world's greatest Champagne. Extraordinary minerality, brioche, and lemon curd.", notes: ["Extraordinary Mineral", "Brioche", "Lemon Curd", "Iconic"], pairedWith: "Full Cheese Experience", score: "100% Match" }},
+            sweet: { accessible: { name: "Muscat de Beaumes-de-Venise", origin: "Rhône, France · 2022", price: "$18/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "A luscious fortified Muscat — orange blossom, peach, and honey. Classic alongside blue cheeses and fruit-based charcuterie boards.", notes: ["Orange Blossom", "Peach", "Honey", "Fortified"], pairedWith: "Blue Cheese or Roquefort", score: "96% Match" }, premium: { name: "Château d'Yquem (Half)", origin: "Sauternes, Bordeaux · 2014", price: "$95/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "The world-famous Sauternes — honey, apricot, and saffron. The only wine that truly becomes one with Roquefort and foie gras.", notes: ["Honey", "Apricot", "Saffron", "Legendary"], pairedWith: "Blue Cheese or Foie Gras Board", score: "100% Match" }, luxury: { name: "Trockenbeerenauslese Eiswein", origin: "Mosel · Egon Müller · 2015", price: "$200/glass", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=600&auto=format&fit=crop", desc: "Germany's rarest and most precious wine — Egon Müller's legendary TBA. A concentrated nectar of honey, preserved apricot, and ethereal sweetness.", notes: ["Preserved Apricot", "Pure Honey", "Ethereal", "Precious"], pairedWith: "Aged Cheese Finale", score: "100% Match" }}
+        }
+    };
+
+    const altWines = [
+        { name: "Krug Grande Cuvée", origin: "Champagne · NV", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=120&auto=format&fit=crop", note: "Perfect for any celebration" },
+        { name: "Château Margaux", origin: "Pauillac · 2016", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=120&auto=format&fit=crop", note: "The first growth icon" },
+        { name: "Dom Pérignon Rosé", origin: "Champagne · 2010", img: "https://images.unsplash.com/photo-1569919659476-f0852f6834b7?q=80&w=120&auto=format&fit=crop", note: "Extraordinary prestige cuvée" }
+    ];
+
+    let selections = { category: null, flavour: null, budget: null };
+    let currentStep = 1;
+
+    function updateStepIndicator(step) {
+        for (let i = 1; i <= 4; i++) {
+            const dot = document.getElementById(`dot${i}`);
+            if (i < step) { dot.className = 'step-dot done'; dot.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+            else if (i === step) { dot.className = 'step-dot active'; dot.innerHTML = i < 4 ? i : '<i class="fa-solid fa-wine-glass"></i>'; }
+            else { dot.className = 'step-dot'; dot.innerHTML = i < 4 ? i : '<i class="fa-solid fa-wine-glass"></i>'; }
+        }
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`line${i}`).className = i < step ? 'step-line done' : 'step-line';
+        }
+    }
+
+    function goToStep(step) {
+        document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+        document.getElementById(`step${step}`).classList.add('active');
+        currentStep = step;
+        updateStepIndicator(step);
+    }
+
+    function setupOptions(gridId, key, nextBtnId) {
+        const grid = document.getElementById(gridId);
+        const nextBtn = document.getElementById(nextBtnId);
+        grid.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', () => {
+                grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selections[key] = card.dataset.value;
+                nextBtn.disabled = false;
+            });
+        });
+    }
+
+    setupOptions('categoryGrid', 'category', 'step1Next');
+    setupOptions('flavourGrid', 'flavour', 'step2Next');
+    setupOptions('budgetGrid', 'budget', 'step3Next');
+
+    document.getElementById('step1Next').addEventListener('click', () => goToStep(2));
+    document.getElementById('step2Back').addEventListener('click', () => goToStep(1));
+    document.getElementById('step2Next').addEventListener('click', () => goToStep(3));
+    document.getElementById('step3Back').addEventListener('click', () => goToStep(2));
+    document.getElementById('step3Next').addEventListener('click', () => {
+        const result = pairingDB[selections.category]?.[selections.flavour]?.[selections.budget];
+        if (result) {
+            document.getElementById('wineResult').innerHTML = `
+                <div class="wine-result-grid">
+                    <div class="wine-result-img">
+                        <img src="${result.img}" alt="${result.name}">
+                        <span class="wine-match-score">${result.score}</span>
+                    </div>
+                    <div class="wine-result-body">
+                        <p class="sommelier-note">"This is my personal recommendation for your evening at DineCraft." — David Laurent, Head Sommelier</p>
+                        <h2 class="wine-name">${result.name}</h2>
+                        <p class="wine-origin">${result.origin} · ${result.price}</p>
+                        <p class="wine-desc">${result.desc}</p>
+                        <div class="tasting-notes">${result.notes.map(n => `<span class="tasting-note">${n}</span>`).join('')}</div>
+                        <div class="wine-pairing-for">
+                            <i class="fa-solid fa-utensils" style="color: var(--color-gold); margin-right: 6px;"></i>
+                            <strong>Best paired with:</strong> ${result.pairedWith}
+                        </div>
+                        <div class="wine-result-actions">
+                            <a href="booking.html" class="btn btn-gold">
+                                <i class="fa-regular fa-calendar-check"></i> Reserve a Table
+                            </a>
+                            <a href="menu.html" class="btn btn-outline-gold">
+                                <i class="fa-solid fa-utensils"></i> View Menu
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('altGrid').innerHTML = altWines.map(w => `
+                <div class="alt-card">
+                    <img src="${w.img}" alt="${w.name}">
+                    <h4>${w.name}</h4>
+                    <p>${w.origin}</p>
+                    <p style="margin-top: 4px; font-style: italic;">${w.note}</p>
+                </div>
+            `).join('');
+        }
+        goToStep(4);
+    });
+
+    document.getElementById('retakeQuiz').addEventListener('click', () => {
+        selections = { category: null, flavour: null, budget: null };
+        document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+        document.querySelectorAll('#step1Next, #step2Next, #step3Next').forEach(b => b.disabled = true);
+        goToStep(1);
+    });
+
+    // Mobile Nav
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mainNav = document.getElementById('mainNav');
+    if (mobileToggle && mainNav) mobileToggle.addEventListener('click', () => mainNav.querySelector('.nav-list').classList.toggle('active'));
+    // FAB
+    const fabMain = document.getElementById('fabMain');
+    const fabOptions = document.getElementById('fabOptions');
+    const fabIcon = document.getElementById('fabIcon');
+    fabMain.addEventListener('click', () => {
+        fabOptions.classList.toggle('open');
+        fabIcon.className = fabOptions.classList.contains('open') ? 'fa-solid fa-xmark' : 'fa-solid fa-headset';
+    });
+    </script>
+</body>
+</html>

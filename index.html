@@ -42,9 +42,10 @@
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link active">Home</a></li>
                     <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="about.html" class="nav-link">Our Story</a></li>
+                    <li><a href="wine-pairing.html" class="nav-link">Wine Pairing</a></li>
                     <li><a href="booking.html" class="nav-link">Booking</a></li>
-                    <li><a href="#signatures" class="nav-link">Chef Specials</a></li>
-                    <li><a href="#private-dining" class="nav-link">Private Dining</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
@@ -420,66 +421,84 @@
             </div>
         </section>
 
-        <!-- What Our Guests Say / Reviews Section -->
+        <!-- Auto-scrolling Reviews Carousel -->
         <section class="section reviews-section" id="reviews">
             <div class="container">
                 <div class="section-header text-center">
-                    <span class="gold-subtitle">TESTIMONIALS</span>
+                    <span class="gold-subtitle">GUEST TESTIMONIALS</span>
                     <h2 class="section-title">What Our Guests Say</h2>
                     <div class="rating-stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                     </div>
-                    <p class="rating-summary">4.9 out of 5 based on 250+ verified guest reviews</p>
+                    <p class="rating-summary">4.9 out of 5 · Based on 250+ verified guest reviews</p>
                 </div>
 
-                <div class="reviews-grid">
-                    <div class="review-card">
-                        <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                        <div class="review-stars">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="review-text">"An extraordinary dining experience. The attention to detail in every dish is remarkable. The Truffle Alfredo Pasta is a masterpiece!"</p>
-                        <div class="reviewer">
-                            <div class="avatar-circle">SM</div>
-                            <div class="reviewer-info">
-                                <strong class="reviewer-name">Sarah Mitchell</strong>
-                                <span class="reviewer-role">Culinary Food Critic</span>
-                            </div>
-                        </div>
+                <div class="reviews-carousel-wrapper" id="reviewsCarouselWrapper">
+                    <div class="reviews-carousel-track" id="reviewsTrack">
+                        <!-- Cards injected by JS -->
                     </div>
+                </div>
 
-                    <div class="review-card">
-                        <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                        <div class="review-stars">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="review-text">"DineCraft has become our go-to spot for anniversaries and special celebrations. The ambiance, service, and Wagyu Ribeye are consistently exceptional."</p>
-                        <div class="reviewer">
-                            <div class="avatar-circle">JC</div>
-                            <div class="reviewer-info">
-                                <strong class="reviewer-name">James Chen</strong>
-                                <span class="reviewer-role">Regular Guest</span>
-                            </div>
-                        </div>
+                <div class="reviews-carousel-nav">
+                    <button class="carousel-arrow" id="carouselPrev" aria-label="Previous review"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                    <button class="carousel-arrow" id="carouselNext" aria-label="Next review"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Map & Location Section -->
+        <section class="map-section" id="location">
+            <div class="container">
+                <div class="section-header text-center" style="margin-bottom: 3rem;">
+                    <span class="gold-subtitle">FIND US</span>
+                    <h2 class="section-title">Our Location</h2>
+                    <p class="section-description">Nestled in the heart of Manhattan — a culinary destination worth the journey.</p>
+                </div>
+                <div class="map-grid">
+                    <div class="map-iframe-container">
+                        <iframe
+                            src="https://www.openstreetmap.org/export/embed.html?bbox=-74.0060%2C40.7110%2C-73.9940%2C40.7200&layer=mapnik&marker=40.7128%2C-74.0060"
+                            allowfullscreen
+                            loading="lazy"
+                            title="DineCraft Location Map"
+                            aria-label="Interactive map showing DineCraft restaurant location in Manhattan, New York"
+                        ></iframe>
                     </div>
-
-                    <div class="review-card">
-                        <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                        <div class="review-stars">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="review-text">"The wine cellar recommendation was spot-on and the staff are incredibly knowledgeable. Smooth jazz on Friday nights creates an unforgettable vibe!"</p>
-                        <div class="reviewer">
-                            <div class="avatar-circle">ER</div>
-                            <div class="reviewer-info">
-                                <strong class="reviewer-name">Emily Rodriguez</strong>
-                                <span class="reviewer-role">Wine Enthusiast</span>
+                    <div class="map-info-panel">
+                        <div class="map-info-card">
+                            <div class="map-info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                            <div class="map-info-content">
+                                <h4>Address</h4>
+                                <p>123 Culinary Street, Lower Manhattan<br>New York, NY 10001, USA</p>
+                                <a href="https://maps.google.com/?q=123+Culinary+Street+New+York+NY" target="_blank">Open in Google Maps →</a>
                             </div>
                         </div>
+                        <div class="map-info-card">
+                            <div class="map-info-icon"><i class="fa-solid fa-clock"></i></div>
+                            <div class="map-info-content">
+                                <h4>Opening Hours</h4>
+                                <p>Mon – Thu: 11:00 AM – 10:00 PM<br>Fri – Sat: 11:00 AM – 12:00 AM<br>Sunday: 10:00 AM – 9:30 PM</p>
+                            </div>
+                        </div>
+                        <div class="map-info-card">
+                            <div class="map-info-icon"><i class="fa-solid fa-subway"></i></div>
+                            <div class="map-info-content">
+                                <h4>Getting Here</h4>
+                                <p><strong style="color:var(--color-gold-light)">Subway:</strong> A, C, E lines — Canal St (3 min walk)<br><strong style="color:var(--color-gold-light)">Parking:</strong> Valet available from 5:00 PM daily<br><strong style="color:var(--color-gold-light)">Taxi/Rideshare:</strong> Drop-off at main entrance</p>
+                            </div>
+                        </div>
+                        <div class="map-info-card">
+                            <div class="map-info-icon"><i class="fa-solid fa-phone"></i></div>
+                            <div class="map-info-content">
+                                <h4>Reservations & Enquiries</h4>
+                                <p>Call us: <a href="tel:+15553829000">+1 (555) 382-9000</a><br>Email: <a href="mailto:info@dinecraft.com">info@dinecraft.com</a></p>
+                            </div>
+                        </div>
+                        <a href="booking.html" class="btn btn-gold directions-btn">
+                            <i class="fa-regular fa-calendar-check"></i>
+                            <span>Book a Table</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -722,6 +741,27 @@
 
     <!-- Toast Notification Popup Container -->
     <div class="toast-container" id="toastContainer"></div>
+
+    <!-- WhatsApp / Call Floating Action Button -->
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-main" id="fabMain" title="Contact Us">
+            <i class="fa-solid fa-headset" id="fabIcon"></i>
+        </div>
+        <div class="fab-options" id="fabOptions">
+            <a href="https://wa.me/15553829000" target="_blank" rel="noopener" class="fab-option fab-whatsapp" aria-label="Chat on WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span class="fab-label">WhatsApp</span>
+            </a>
+            <a href="tel:+15553829000" class="fab-option fab-call" aria-label="Call Us">
+                <i class="fa-solid fa-phone"></i>
+                <span class="fab-label">Call Us</span>
+            </a>
+            <a href="booking.html" class="fab-option fab-reserve" aria-label="Reserve a Table">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span class="fab-label">Reserve</span>
+            </a>
+        </div>
+    </div>
 
     <!-- JavaScript File -->
     <script src="main.js"></script>
