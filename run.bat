@@ -7,7 +7,9 @@ echo  ========================================
 echo.
 echo  [OK] Launching index.html in your default browser...
 echo.
+echo  Link: %~dp0index.html
+echo.
 start "" "%~dp0index.html"
 echo  [DONE] Cafe Demo is now open!
 echo.
-timeout /t 3 >nul
+pause
