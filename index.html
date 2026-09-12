@@ -492,7 +492,7 @@
                             <div class="map-info-icon"><i class="fa-solid fa-phone"></i></div>
                             <div class="map-info-content">
                                 <h4>Reservations & Enquiries</h4>
-                                <p>Call us: <a href="tel:+15553829000">+1 (555) 382-9000</a><br>Email: <a href="mailto:info@dinecraft.com">info@dinecraft.com</a></p>
+                                <p>Call us: <a href="tel:+918310311290">+91 83103 11290</a><br>Email: <a href="mailto:shashankpshashank2@gmail.com">shashankpshashank2@gmail.com</a></p>
                             </div>
                         </div>
                         <a href="booking.html" class="btn btn-gold directions-btn">
@@ -620,9 +620,9 @@
                         <h4 class="footer-heading">Get In Touch</h4>
                         <ul class="contact-info">
                             <li><i class="fa-solid fa-location-dot"></i> 123 Culinary Street, New York, NY 10001</li>
-                            <li><i class="fa-solid fa-phone"></i> <a href="tel:+15553829000">+1 (555) 382-9000</a></li>
-                            <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@dinecraft.com">info@dinecraft.com</a></li>
-                            <li><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/15553829000" target="_blank">WhatsApp Us</a></li>
+                            <li><i class="fa-solid fa-phone"></i> <a href="tel:+918310311290">+91 83103 11290</a></li>
+                            <li><i class="fa-solid fa-envelope"></i> <a href="mailto:shashankpshashank2@gmail.com">shashankpshashank2@gmail.com</a></li>
+                            <li><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/918310311290" target="_blank">WhatsApp Us</a></li>
                         </ul>
                         <a href="booking.html" class="btn btn-gold footer-reserve-btn">
                             <i class="fa-regular fa-calendar-check"></i>
@@ -670,8 +670,34 @@
     if (vipForm) {
         vipForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const input = document.getElementById('vipEmailInput');
-            vipForm.innerHTML = '<div style="text-align:center;padding:1rem 0"><i class="fa-solid fa-circle-check" style="color:#e2c070;font-size:2rem"></i><p style="color:#e2c070;font-weight:600;margin-top:0.5rem">🥂 Welcome to VIP! Check your inbox for your champagne voucher.</p></div>';
+            const userEmail = document.getElementById('vipEmailInput').value.trim();
+
+            // Build structured email to owner
+            const ownerEmail = 'shashankpshashank2@gmail.com';
+            const subject = encodeURIComponent('🥂 New VIP Access Request — DineCraft');
+            const body = encodeURIComponent(
+`━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🥂 NEW VIP ACCESS REQUEST — DineCraft
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A new user has requested VIP membership access.
+
+👤 User Email: ${userEmail}
+📅 Request Date: ${new Date().toLocaleString('en-IN')}
+🎁 Offer: Complimentary Bottle of Moët & Chandon on First Visit
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Please respond to ${userEmail} with their VIP voucher.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+— DineCraft Booking System`
+            );
+
+            // Open email client with pre-filled message
+            window.location.href = `mailto:${ownerEmail}?subject=${subject}&body=${body}`;
+
+            // Show success message
+            vipForm.innerHTML = '<div style="text-align:center;padding:1rem 0"><i class="fa-solid fa-circle-check" style="color:#e2c070;font-size:2rem"></i><p style="color:#e2c070;font-weight:600;margin-top:0.5rem">🥂 Request sent! Your VIP access email has been dispatched. We\'ll confirm shortly!</p></div>';
         });
     }
 
