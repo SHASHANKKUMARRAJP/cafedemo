@@ -507,6 +507,73 @@
 
     <!-- Footer & Contact Section -->
     <footer class="site-footer" id="contact">
+
+        <!-- VIP Offer Banner -->
+        <div class="footer-vip-banner">
+            <div class="vip-banner-inner">
+                <div class="vip-banner-glow"></div>
+                <div class="vip-banner-content">
+                    <div class="vip-badge"><i class="fa-solid fa-crown"></i> VIP OFFER</div>
+                    <h3 class="vip-title">Complimentary Champagne on Your First Visit</h3>
+                    <p class="vip-desc">Subscribe to our exclusive mailing list and receive a complimentary bottle of Moët &amp; Chandon on your first dining experience.</p>
+                    <form class="vip-form" id="vipNewsletterForm">
+                        <input type="email" placeholder="Enter your email for VIP access..." required id="vipEmailInput">
+                        <button type="submit" class="btn btn-gold">
+                            <i class="fa-solid fa-lock"></i> Claim VIP Access
+                        </button>
+                    </form>
+                    <p class="vip-note"><i class="fa-solid fa-shield-halved"></i> No spam. Unsubscribe anytime. Valid for new members only.</p>
+                </div>
+                <div class="vip-banner-img">
+                    <img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?w=500&auto=format&fit=crop&q=80" alt="Champagne Fine Dining Experience">
+                </div>
+            </div>
+        </div>
+
+        <!-- Awards & Stats Row -->
+        <div class="footer-stats-bar">
+            <div class="container">
+                <div class="footer-stats-grid">
+                    <div class="footer-stat">
+                        <i class="fa-solid fa-award footer-stat-icon"></i>
+                        <div>
+                            <span class="stat-number" data-target="12">0</span><span class="stat-suffix">+</span>
+                            <span class="stat-label">Awards Won</span>
+                        </div>
+                    </div>
+                    <div class="footer-stat">
+                        <i class="fa-solid fa-utensils footer-stat-icon"></i>
+                        <div>
+                            <span class="stat-number" data-target="250">0</span><span class="stat-suffix">+</span>
+                            <span class="stat-label">Menu Items</span>
+                        </div>
+                    </div>
+                    <div class="footer-stat">
+                        <i class="fa-solid fa-users footer-stat-icon"></i>
+                        <div>
+                            <span class="stat-number" data-target="48000">0</span><span class="stat-suffix">+</span>
+                            <span class="stat-label">Happy Guests</span>
+                        </div>
+                    </div>
+                    <div class="footer-stat">
+                        <i class="fa-solid fa-star footer-stat-icon"></i>
+                        <div>
+                            <span class="stat-number" data-target="49">0</span><span class="stat-suffix" style="font-size:1.5rem;">/5</span>
+                            <span class="stat-label">Average Rating</span>
+                        </div>
+                    </div>
+                    <div class="footer-stat">
+                        <i class="fa-solid fa-wine-bottle footer-stat-icon"></i>
+                        <div>
+                            <span class="stat-number" data-target="250">0</span><span class="stat-suffix">+</span>
+                            <span class="stat-label">Vintage Wines</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Footer Grid -->
         <div class="footer-top">
             <div class="container">
                 <div class="footer-grid">
@@ -514,23 +581,37 @@
                     <div class="footer-col brand-col">
                         <h3 class="footer-logo">DineCraft</h3>
                         <p class="footer-tagline">Crafted cuisine. Thoughtful ambience. Unforgettable evenings.</p>
-                        <div class="social-links">
-                            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="#" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                            <a href="#" aria-label="TripAdvisor"><i class="fa-brands fa-tripadvisor"></i></a>
+                        <div class="footer-award-badges">
+                            <span class="award-badge"><i class="fa-solid fa-medal"></i> Michelin Inspired</span>
+                            <span class="award-badge"><i class="fa-solid fa-leaf"></i> 100% Organic</span>
                         </div>
+                        <div class="social-links">
+                            <a href="#" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" aria-label="X Twitter" title="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="#" aria-label="TripAdvisor" title="TripAdvisor"><i class="fa-brands fa-tripadvisor"></i></a>
+                            <a href="#" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                        <p class="footer-rating-line">
+                            <i class="fa-solid fa-star" style="color:#e2c070"></i>
+                            <i class="fa-solid fa-star" style="color:#e2c070"></i>
+                            <i class="fa-solid fa-star" style="color:#e2c070"></i>
+                            <i class="fa-solid fa-star" style="color:#e2c070"></i>
+                            <i class="fa-solid fa-star" style="color:#e2c070"></i>
+                            <span>&nbsp;4.9 / 5 on Google &amp; TripAdvisor</span>
+                        </p>
                     </div>
 
                     <!-- Column 2: Quick Links -->
                     <div class="footer-col">
-                        <h4 class="footer-heading">Quick Links</h4>
+                        <h4 class="footer-heading">Explore</h4>
                         <ul class="footer-links">
-                            <li><a href="#home">Home</a></li>
-                            <li><a href="#recommendations">Menu</a></li>
-                            <li><a href="#ambience">Ambience</a></li>
-                            <li><a href="#events">Events</a></li>
-                            <li><a href="#contact">Contact</a></li>
+                            <li><a href="index.html"><i class="fa-solid fa-house fa-fw"></i> Home</a></li>
+                            <li><a href="menu.html"><i class="fa-solid fa-book-open fa-fw"></i> Full Menu</a></li>
+                            <li><a href="gallery.html"><i class="fa-solid fa-images fa-fw"></i> Gallery</a></li>
+                            <li><a href="about.html"><i class="fa-solid fa-circle-info fa-fw"></i> Our Story</a></li>
+                            <li><a href="wine-pairing.html"><i class="fa-solid fa-wine-glass fa-fw"></i> Wine Pairing</a></li>
+                            <li><a href="booking.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Book a Table</a></li>
                         </ul>
                     </div>
 
@@ -542,21 +623,25 @@
                             <li><span>Fri – Sat</span> <span>11:00 AM – 12:00 AM</span></li>
                             <li><span>Sunday</span> <span>10:00 AM – 9:30 PM</span></li>
                         </ul>
+                        <div class="footer-open-now" id="footerOpenNow">
+                            <span class="open-dot"></span>
+                            <span id="openNowText">Checking hours...</span>
+                        </div>
                     </div>
 
-                    <!-- Column 4: Contact Us & Newsletter -->
+                    <!-- Column 4: Contact Us -->
                     <div class="footer-col contact-col">
-                        <h4 class="footer-heading">Contact Us</h4>
+                        <h4 class="footer-heading">Get In Touch</h4>
                         <ul class="contact-info">
                             <li><i class="fa-solid fa-location-dot"></i> 123 Culinary Street, New York, NY 10001</li>
-                            <li><i class="fa-solid fa-phone"></i> +1 (555) 382-9000</li>
-                            <li><i class="fa-solid fa-envelope"></i> info@dinecraft.com</li>
+                            <li><i class="fa-solid fa-phone"></i> <a href="tel:+15553829000">+1 (555) 382-9000</a></li>
+                            <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@dinecraft.com">info@dinecraft.com</a></li>
+                            <li><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/15553829000" target="_blank">WhatsApp Us</a></li>
                         </ul>
-
-                        <form class="newsletter-form" id="newsletterForm">
-                            <input type="email" placeholder="Subscribe for VIP updates..." required>
-                            <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
-                        </form>
+                        <a href="booking.html" class="btn btn-gold footer-reserve-btn">
+                            <i class="fa-regular fa-calendar-check"></i>
+                            <span>Reserve a Table</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -564,15 +649,71 @@
 
         <div class="footer-bottom">
             <div class="container copyright-bar">
-                <p>&copy; 2026 DineCraft Cafe & Dining. All rights reserved.</p>
+                <p>&copy; 2026 DineCraft Fine Dining &amp; Cafe. All rights reserved. | Crafted with <i class="fa-solid fa-heart" style="color:#e2c070"></i> in New York</p>
                 <div class="legal-links">
                     <a href="#">Privacy Policy</a>
                     <span>•</span>
                     <a href="#">Terms of Service</a>
+                    <span>•</span>
+                    <a href="#">Accessibility</a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <script>
+    // Open Now indicator
+    (function() {
+        const now = new Date();
+        const day = now.getDay(); // 0=Sun, 1=Mon...6=Sat
+        const hour = now.getHours() + now.getMinutes() / 60;
+        let isOpen = false;
+        if (day >= 1 && day <= 4) isOpen = (hour >= 11 && hour < 22);
+        else if (day === 5 || day === 6) isOpen = (hour >= 11 && hour < 24);
+        else if (day === 0) isOpen = (hour >= 10 && hour < 21.5);
+        const el = document.getElementById('openNowText');
+        const dot = document.querySelector('.open-dot');
+        if (el) {
+            el.textContent = isOpen ? 'Open Now — We\'re welcoming guests!' : 'Currently Closed — Opens Tomorrow';
+            if (dot) dot.style.background = isOpen ? '#4caf50' : '#e74c3c';
+        }
+    })();
+
+    // VIP form
+    const vipForm = document.getElementById('vipNewsletterForm');
+    if (vipForm) {
+        vipForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('vipEmailInput');
+            vipForm.innerHTML = '<div style="text-align:center;padding:1rem 0"><i class="fa-solid fa-circle-check" style="color:#e2c070;font-size:2rem"></i><p style="color:#e2c070;font-weight:600;margin-top:0.5rem">🥂 Welcome to VIP! Check your inbox for your champagne voucher.</p></div>';
+        });
+    }
+
+    // Animated counter for footer stats
+    function animateCounter(el) {
+        const target = parseInt(el.getAttribute('data-target'));
+        const duration = 1800;
+        const step = target / (duration / 16);
+        let current = 0;
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(timer); }
+            el.textContent = target >= 1000 ? Math.floor(current).toLocaleString() : (target === 49 ? (current / 10).toFixed(1) : Math.floor(current));
+        }, 16);
+    }
+    const statsSection = document.querySelector('.footer-stats-bar');
+    if (statsSection) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.stat-number').forEach(animateCounter);
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+        observer.observe(statsSection);
+    }
+    </script>
 
     <!-- MODAL 1: Interactive Table Reservation Drawer/Modal -->
     <div class="modal" id="reservationModal" aria-hidden="true">
