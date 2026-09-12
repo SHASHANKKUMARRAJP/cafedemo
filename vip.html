@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Join the DineCraft VIP Access Program - Enjoy exclusive perks, complimentary Moët & Chandon champagne, and priority reservations.">
+    <title>VIP Access Membership | DineCraft Fine Dining & Cafe</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="index.css?v=2">
+</head>
+<body class="page-booking">
+
+    <!-- Header & Navigation Bar -->
+    <header class="site-header scrolled" id="siteHeader">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo">
+                <span class="logo-text">DINE CRAFT</span>
+                <span class="logo-sub">FINE DINING & CAFE</span>
+            </a>
+
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="about.html" class="nav-link">Our Story</a></li>
+                    <li><a href="wine-pairing.html" class="nav-link">Wine Pairing</a></li>
+                    <li><a href="booking.html" class="nav-link">Booking</a></li>
+                    <li><a href="vip.html" class="nav-link active">VIP Access</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a href="booking.html" class="btn btn-gold">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Reserve a Table</span>
+                </a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="page-main-content">
+        <!-- Page Hero Banner -->
+        <section class="page-hero-section">
+            <div class="container text-center">
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(226, 192, 112, 0.15); border: 1px solid var(--color-gold); padding: 6px 16px; border-radius: 50px; color: var(--color-gold); font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 20px;">
+                    <i class="fa-solid fa-crown"></i> Exclusive Privilege
+                </div>
+                <h1 class="page-hero-title">Claim VIP Access</h1>
+                <p class="page-hero-subtitle">
+                    Enjoy complimentary Moët &amp; Chandon champagne on your first visit, chef's special tasting invitations, and priority table reservations.
+                </p>
+            </div>
+        </section>
+
+        <!-- VIP Form & Privileges Layout -->
+        <section class="booking-page-content">
+            <div class="container">
+                <div class="booking-two-column-grid">
+                    
+                    <!-- Left Column: VIP Application Form -->
+                    <div class="booking-form-panel">
+                        <h2 class="form-panel-title"><i class="fa-solid fa-gem" style="color: var(--color-gold); margin-right: 10px;"></i>VIP Member Details</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 0.95rem;">
+                            Fill in your details below to request your VIP access pass. Your application will be sent directly to our team.
+                        </p>
+                        
+                        <form id="vipAccessPageForm" class="page-reservation-form">
+                            <!-- Full Name -->
+                            <div class="form-group-block">
+                                <label for="vipName">Full Name *</label>
+                                <input type="text" id="vipName" placeholder="e.g. Shashank Kumar" required>
+                            </div>
+
+                            <!-- Email & Phone Row -->
+                            <div class="form-row-2col">
+                                <div class="form-group-block">
+                                    <label for="vipEmail">Email Address *</label>
+                                    <input type="email" id="vipEmail" placeholder="yourname@example.com" required>
+                                </div>
+                                <div class="form-group-block">
+                                    <label for="vipPhone">Phone / WhatsApp *</label>
+                                    <input type="tel" id="vipPhone" placeholder="+91 83103 11290" required>
+                                </div>
+                            </div>
+
+                            <!-- Preferred Dining Date (Optional) -->
+                            <div class="form-group-block input-icon-group">
+                                <label for="vipDate">Expected First Visit Date (Optional)</label>
+                                <div class="input-with-icon">
+                                    <input type="date" id="vipDate">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </div>
+                            </div>
+
+                            <!-- Special Requests / Notes -->
+                            <div class="form-group-block">
+                                <label for="vipNotes">Special Dining Preferences or Requests (Optional)</label>
+                                <textarea id="vipNotes" rows="3" placeholder="Tell us about dietary preferences, seating requests, or special occasions..."></textarea>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-gold btn-block btn-lg" style="margin-top: 10px;">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Send VIP Request Email</span>
+                            </button>
+
+                            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 15px;">
+                                <i class="fa-solid fa-shield-halved"></i> Your application will launch your email client with pre-filled details to send to <strong>shashankpshashank2@gmail.com</strong>.
+                            </p>
+                        </form>
+                    </div>
+
+                    <!-- Right Column: VIP Privileges Card -->
+                    <div class="booking-summary-card" style="align-self: start;">
+                        <h3 class="summary-title" style="border-bottom: 1px solid rgba(226,192,112,0.2); padding-bottom: 15px; margin-bottom: 20px;">
+                            <i class="fa-solid fa-star" style="color: var(--color-gold);"></i> VIP Member Benefits
+                        </h3>
+                        
+                        <div class="summary-perks-list" style="display: flex; flex-direction: column; gap: 20px;">
+                            <div class="perk-item" style="display: flex; gap: 15px; align-items: flex-start;">
+                                <div style="background: rgba(226,192,112,0.15); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-gold); font-size: 1.2rem; flex-shrink: 0;">
+                                    <i class="fa-solid fa-wine-glass"></i>
+                                </div>
+                                <div>
+                                    <h4 style="color: var(--color-gold); margin-bottom: 4px; font-family: var(--font-heading); font-size: 1.1rem;">Moët &amp; Chandon Welcome</h4>
+                                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.4;">Complimentary bottle of premium champagne served upon your first arrival.</p>
+                                </div>
+                            </div>
+
+                            <div class="perk-item" style="display: flex; gap: 15px; align-items: flex-start;">
+                                <div style="background: rgba(226,192,112,0.15); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-gold); font-size: 1.2rem; flex-shrink: 0;">
+                                    <i class="fa-solid fa-utensils"></i>
+                                </div>
+                                <div>
+                                    <h4 style="color: var(--color-gold); margin-bottom: 4px; font-family: var(--font-heading); font-size: 1.1rem;">Chef's Tasting Invitations</h4>
+                                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.4;">Exclusive priority invitations to seasonal menu previews & secret wine pairings.</p>
+                                </div>
+                            </div>
+
+                            <div class="perk-item" style="display: flex; gap: 15px; align-items: flex-start;">
+                                <div style="background: rgba(226,192,112,0.15); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-gold); font-size: 1.2rem; flex-shrink: 0;">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+                                <div>
+                                    <h4 style="color: var(--color-gold); margin-bottom: 4px; font-family: var(--font-heading); font-size: 1.1rem;">Priority Reservations</h4>
+                                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.4;">Guaranteed prime seating & concierge booking even on peak weekend evenings.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px dashed rgba(226,192,112,0.3); text-align: center;">
+                            <i class="fa-solid fa-phone-volume" style="color: var(--color-gold); font-size: 1.5rem; margin-bottom: 10px;"></i>
+                            <h4 style="color: #fff; font-size: 0.95rem; margin-bottom: 5px;">VIP Concierge Desk</h4>
+                            <p style="color: var(--color-gold); font-weight: 600; font-size: 1.1rem; margin: 0;">+91 83103 11290</p>
+                            <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 4px;">shashankpshashank2@gmail.com</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col brand-col">
+                        <h3 class="footer-logo">DineCraft</h3>
+                        <p class="footer-tagline">Crafted cuisine. Thoughtful ambience. Unforgettable evenings.</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="menu.html">Menu</a></li>
+                            <li><a href="booking.html">Booking</a></li>
+                            <li><a href="vip.html">VIP Access</a></li>
+                            <li><a href="index.html#contact">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Opening Hours</h4>
+                        <ul class="hours-list">
+                            <li><span>Mon–Thu</span> <span>11am – 10pm</span></li>
+                            <li><span>Fri–Sat</span> <span>11am – 12am</span></li>
+                            <li><span>Sunday</span> <span>Closed</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col contact-col">
+                        <h4 class="footer-heading">Contact Us</h4>
+                        <ul class="contact-info">
+                            <li><i class="fa-solid fa-location-dot"></i> 123 Culinary Street, New York, NY 10001</li>
+                            <li><i class="fa-solid fa-phone"></i> +91 83103 11290</li>
+                            <li><i class="fa-solid fa-envelope"></i> shashankpshashank2@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container copyright-bar">
+                <p>&copy; 2026 DineCraft. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <span>•</span>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp / Call Floating Action Button -->
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-main" id="fabMain" title="Contact Us">
+            <i class="fa-solid fa-headset" id="fabIcon"></i>
+        </div>
+        <div class="fab-options" id="fabOptions">
+            <a href="https://wa.me/918310311290?text=Hello%20DineCraft%20Cafe%2C%20I%20would%20like%20to%20reserve%20a%20table" target="_blank" rel="noopener" class="fab-option fab-whatsapp" title="Chat on WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span class="fab-label">WhatsApp</span>
+            </a>
+            <a href="tel:+918310311290" class="fab-option fab-call" title="Call Us">
+                <i class="fa-solid fa-phone"></i>
+                <span class="fab-label">Call Us</span>
+            </a>
+            <a href="booking.html" class="fab-option fab-reserve" title="Reserve a Table">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span class="fab-label">Reserve</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Script for VIP Page logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auto-fill email if passed in query string (?email=...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailParam = urlParams.get('email');
+            if (emailParam) {
+                const emailInput = document.getElementById('vipEmail');
+                if (emailInput) emailInput.value = emailParam;
+            }
+
+            const vipForm = document.getElementById('vipAccessPageForm');
+            if (vipForm) {
+                vipForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const name = document.getElementById('vipName').value.trim();
+                    const email = document.getElementById('vipEmail').value.trim();
+                    const phone = document.getElementById('vipPhone').value.trim();
+                    const date = document.getElementById('vipDate').value;
+                    const notes = document.getElementById('vipNotes').value.trim();
+
+                    // Format date nicely if present
+                    let formattedDate = 'Not specified';
+                    if (date) {
+                        const d = new Date(date + 'T00:00:00');
+                        formattedDate = d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    }
+
+                    // Structured email subject & body
+                    const ownerEmail = 'shashankpshashank2@gmail.com';
+                    const subject = encodeURIComponent(`👑 NEW VIP ACCESS APPLICATION — ${name}`);
+                    
+                    const bodyText = 
+`👑 VIP ACCESS MEMBERSHIP APPLICATION — DineCraft Fine Dining
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 Member Name: ${name}
+✉️ Email Address: ${email}
+📞 Phone / WhatsApp: ${phone}
+
+📅 Preferred First Visit: ${formattedDate}
+
+📝 Special Requests / Dining Preferences:
+${notes ? notes : 'None specified.'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎁 Requested Perk: Complimentary Bottle of Moët & Chandon Champagne
+⚡ Status: Pending VIP Voucher Issuance`;
+
+                    const mailtoUrl = `mailto:${ownerEmail}?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
+                    
+                    // Trigger email client
+                    window.location.href = mailtoUrl;
+
+                    // Show success feedback
+                    alert('VIP Application prepared! Your email application is opening. Once sent, our VIP Concierge team will review your application.');
+                });
+            }
+
+            // FAB Toggle
+            const fabMain = document.getElementById('fabMain');
+            const fabOptions = document.getElementById('fabOptions');
+            const fabIcon = document.getElementById('fabIcon');
+            if (fabMain) {
+                fabMain.addEventListener('click', () => {
+                    const isOpen = fabOptions.classList.toggle('open');
+                    if (fabIcon) fabIcon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-headset';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

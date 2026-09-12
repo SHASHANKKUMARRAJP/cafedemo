@@ -620,8 +620,8 @@
                         <h4 class="footer-heading">Contact Us</h4>
                         <ul class="contact-info">
                             <li><i class="fa-solid fa-location-dot"></i> 123 Culinary Street, New York, NY 10001</li>
-                            <li><i class="fa-solid fa-phone"></i> +1 (555) 382-9000</li>
-                            <li><i class="fa-solid fa-envelope"></i> info@dinecraft.com</li>
+                            <li><i class="fa-solid fa-phone"></i> +91 83103 11290</li>
+                            <li><i class="fa-solid fa-envelope"></i> shashankpshashank2@gmail.com</li>
                         </ul>
                     </div>
                 </div>
@@ -638,8 +638,8 @@
     <div class="fab-container" id="fabContainer">
         <div class="fab-main" id="fabMain"><i class="fa-solid fa-headset" id="fabIcon"></i></div>
         <div class="fab-options" id="fabOptions">
-            <a href="https://wa.me/15553829000" target="_blank" class="fab-option fab-whatsapp"><i class="fa-brands fa-whatsapp"></i><span class="fab-label">WhatsApp</span></a>
-            <a href="tel:+15553829000" class="fab-option fab-call"><i class="fa-solid fa-phone"></i><span class="fab-label">Call Us</span></a>
+            <a href="https://wa.me/918310311290?text=Hello%20DineCraft%20Cafe%2C%20I%20would%20like%20to%20reserve%20a%20table" target="_blank" class="fab-option fab-whatsapp"><i class="fa-brands fa-whatsapp"></i><span class="fab-label">WhatsApp</span></a>
+            <a href="tel:+918310311290" class="fab-option fab-call"><i class="fa-solid fa-phone"></i><span class="fab-label">Call Us</span></a>
             <a href="booking.html" class="fab-option fab-reserve"><i class="fa-regular fa-calendar-check"></i><span class="fab-label">Reserve</span></a>
         </div>
     </div>
@@ -724,12 +724,26 @@
     function setupOptions(gridId, key, nextBtnId) {
         const grid = document.getElementById(gridId);
         const nextBtn = document.getElementById(nextBtnId);
+        if (!grid) return;
         grid.querySelectorAll('.option-card').forEach(card => {
-            card.addEventListener('click', () => {
-                grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'button');
+            const selectCard = () => {
+                grid.querySelectorAll('.option-card').forEach(c => {
+                    c.classList.remove('selected');
+                    c.setAttribute('aria-selected', 'false');
+                });
                 card.classList.add('selected');
+                card.setAttribute('aria-selected', 'true');
                 selections[key] = card.dataset.value;
-                nextBtn.disabled = false;
+                if (nextBtn) nextBtn.disabled = false;
+            };
+            card.addEventListener('click', selectCard);
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectCard();
+                }
             });
         });
     }
@@ -742,67 +756,280 @@
     document.getElementById('step2Back').addEventListener('click', () => goToStep(1));
     document.getElementById('step2Next').addEventListener('click', () => goToStep(3));
     document.getElementById('step3Back').addEventListener('click', () => goToStep(2));
-    document.getElementById('step3Next').addEventListener('click', () => {
-        const result = pairingDB[selections.category]?.[selections.flavour]?.[selections.budget];
-        if (result) {
-            document.getElementById('wineResult').innerHTML = `
-                <div class="wine-result-grid">
-                    <div class="wine-result-img">
-                        <img src="${result.img}" alt="${result.name}">
-                        <span class="wine-match-score">${result.score}</span>
+
+    function renderWineResultCard(result) {
+        document.getElementById('wineResult').innerHTML = `
+            <div class="wine-result-grid">
+                <div class="wine-result-img">
+                    <img src="${result.img}" alt="${result.name}">
+                    <span class="wine-match-score">${result.score || '98% Match'}</span>
+                </div>
+                <div class="wine-result-body">
+                    <p class="sommelier-note">"This is my personal recommendation for your evening at DineCraft." — David Laurent, Head Sommelier</p>
+                    <h2 class="wine-name">${result.name}</h2>
+                    <p class="wine-origin">${result.origin} · ${result.price}</p>
+                    <p class="wine-desc">${result.desc}</p>
+                    <div class="tasting-notes">${(result.notes || []).map(n => `<span class="tasting-note">${n}</span>`).join('')}</div>
+                    <div class="wine-pairing-for">
+                        <i class="fa-solid fa-utensils" style="color: var(--color-gold); margin-right: 6px;"></i>
+                        <strong>Best paired with:</strong> ${result.pairedWith}
                     </div>
-                    <div class="wine-result-body">
-                        <p class="sommelier-note">"This is my personal recommendation for your evening at DineCraft." — David Laurent, Head Sommelier</p>
-                        <h2 class="wine-name">${result.name}</h2>
-                        <p class="wine-origin">${result.origin} · ${result.price}</p>
-                        <p class="wine-desc">${result.desc}</p>
-                        <div class="tasting-notes">${result.notes.map(n => `<span class="tasting-note">${n}</span>`).join('')}</div>
-                        <div class="wine-pairing-for">
-                            <i class="fa-solid fa-utensils" style="color: var(--color-gold); margin-right: 6px;"></i>
-                            <strong>Best paired with:</strong> ${result.pairedWith}
-                        </div>
-                        <div class="wine-result-actions">
-                            <a href="booking.html" class="btn btn-gold">
-                                <i class="fa-regular fa-calendar-check"></i> Reserve a Table
-                            </a>
-                            <a href="menu.html" class="btn btn-outline-gold">
-                                <i class="fa-solid fa-utensils"></i> View Menu
-                            </a>
-                        </div>
+                    <div class="wine-result-actions">
+                        <button class="btn btn-gold modal-trigger" data-target="reservationModal" data-note="Sommelier Wine Pairing: ${result.name} (${result.price})">
+                            <i class="fa-regular fa-calendar-check"></i> Reserve Table with This Wine
+                        </button>
+                        <button class="btn btn-outline-gold" id="savePairingBtn">
+                            <i class="fa-solid fa-bookmark"></i> Save Pairing
+                        </button>
+                        <button class="btn btn-outline-gold" id="sharePairingBtn">
+                            <i class="fa-solid fa-share-nodes"></i> Share
+                        </button>
                     </div>
                 </div>
-            `;
-            document.getElementById('altGrid').innerHTML = altWines.map(w => `
-                <div class="alt-card">
-                    <img src="${w.img}" alt="${w.name}">
-                    <h4>${w.name}</h4>
-                    <p>${w.origin}</p>
-                    <p style="margin-top: 4px; font-style: italic;">${w.note}</p>
-                </div>
-            `).join('');
+            </div>
+        `;
+
+        // Re-attach modal listeners for dynamically added modal-trigger
+        const resBtn = document.querySelector('#wineResult .modal-trigger');
+        if (resBtn) {
+            resBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const notesInput = document.getElementById('resNotes');
+                if (notesInput) notesInput.value = resBtn.getAttribute('data-note');
+                const modal = document.getElementById('reservationModal');
+                if (modal) {
+                    modal.classList.add('active');
+                    modal.setAttribute('aria-hidden', 'false');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
         }
-        goToStep(4);
-    });
+
+        // Save pairing toast
+        const saveBtn = document.getElementById('savePairingBtn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                if (typeof showToast === 'function') {
+                    showToast(`🍷 Saved "${result.name}" to your favorite pairings!`);
+                } else {
+                    alert(`Saved "${result.name}" to your favorite pairings!`);
+                }
+                saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
+                saveBtn.style.borderColor = 'var(--color-gold)';
+            });
+        }
+
+        // Share pairing link
+        const shareBtn = document.getElementById('sharePairingBtn');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', () => {
+                const shareUrl = `${window.location.origin}${window.location.pathname}?cat=${selections.category}&flavour=${selections.flavour}&budget=${selections.budget}`;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(shareUrl);
+                }
+                if (typeof showToast === 'function') {
+                    showToast('🔗 Recommendation link copied to clipboard!');
+                } else {
+                    alert('Recommendation link copied to clipboard!');
+                }
+            });
+        }
+    }
+
+    function generateDynamicAltWines(cat, flav, currentBudget) {
+        const catDB = pairingDB[cat];
+        const flavDB = catDB ? catDB[flav] : null;
+        let alts = [];
+
+        if (flavDB) {
+            Object.keys(flavDB).forEach(bKey => {
+                if (bKey !== currentBudget && flavDB[bKey]) {
+                    const wine = flavDB[bKey];
+                    alts.push({
+                        name: wine.name,
+                        origin: wine.origin,
+                        img: wine.img,
+                        price: wine.price,
+                        desc: wine.desc,
+                        notes: wine.notes,
+                        pairedWith: wine.pairedWith,
+                        score: wine.score,
+                        note: `${bKey.charAt(0).toUpperCase() + bKey.slice(1)} Tier Alternative`
+                    });
+                }
+            });
+        }
+
+        // Fallback default alt wines if needed
+        if (alts.length < 3) {
+            altWines.forEach(w => {
+                if (!alts.some(a => a.name === w.name)) {
+                    alts.push({
+                        name: w.name,
+                        origin: w.origin,
+                        img: w.img,
+                        price: "$45/glass",
+                        desc: `An iconic selection handpicked by Sommelier David Laurent. ${w.note}.`,
+                        notes: ["Iconic", "Sommelier Pick", "Elegant"],
+                        pairedWith: "Chef's Tasting Menu",
+                        score: "97% Match",
+                        note: w.note
+                    });
+                }
+            });
+        }
+
+        return alts.slice(0, 3);
+    }
+
+    function attachAltCardListeners() {
+        document.querySelectorAll('.alt-card').forEach(card => {
+            const selectAlt = () => {
+                const idx = parseInt(card.dataset.altIndex);
+                if (currentAltWines && currentAltWines[idx]) {
+                    renderWineResultCard(currentAltWines[idx]);
+                    document.querySelectorAll('.alt-card').forEach(c => c.style.borderColor = 'var(--border-gold)');
+                    card.style.borderColor = 'var(--color-gold)';
+                    if (typeof showToast === 'function') {
+                        showToast(`Switched view to ${currentAltWines[idx].name}`);
+                    }
+                }
+            };
+            card.addEventListener('click', selectAlt);
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectAlt();
+                }
+            });
+        });
+    }
+
+    let currentAltWines = [];
+
+    // Replace step3Next handler logic cleanly
+    const step3NextBtn = document.getElementById('step3Next');
+    if (step3NextBtn) {
+        step3NextBtn.addEventListener('click', () => {
+            const categoryData = pairingDB[selections.category] || pairingDB['red-meat'];
+            const flavourData = categoryData[selections.flavour] || categoryData[Object.keys(categoryData)[0]];
+            const result = flavourData[selections.budget] || flavourData[Object.keys(flavourData)[0]];
+
+            if (result) {
+                renderWineResultCard(result);
+
+                currentAltWines = generateDynamicAltWines(selections.category, selections.flavour, selections.budget);
+
+                document.getElementById('altGrid').innerHTML = currentAltWines.map((w, index) => `
+                    <div class="alt-card" data-alt-index="${index}" tabindex="0" role="button" title="Click to view details for ${w.name}">
+                        <img src="${w.img}" alt="${w.name}">
+                        <h4>${w.name}</h4>
+                        <p>${w.origin}</p>
+                        <p style="margin-top: 4px; font-style: italic; color: var(--color-gold-light);">${w.note}</p>
+                    </div>
+                `).join('');
+
+                attachAltCardListeners();
+            }
+            goToStep(4);
+        });
+    }
 
     document.getElementById('retakeQuiz').addEventListener('click', () => {
         selections = { category: null, flavour: null, budget: null };
-        document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+        document.querySelectorAll('.option-card').forEach(c => {
+            c.classList.remove('selected');
+            c.setAttribute('aria-selected', 'false');
+        });
         document.querySelectorAll('#step1Next, #step2Next, #step3Next').forEach(b => b.disabled = true);
         goToStep(1);
     });
 
-    // Mobile Nav
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mainNav = document.getElementById('mainNav');
-    if (mobileToggle && mainNav) mobileToggle.addEventListener('click', () => mainNav.querySelector('.nav-list').classList.toggle('active'));
-    // FAB
-    const fabMain = document.getElementById('fabMain');
-    const fabOptions = document.getElementById('fabOptions');
-    const fabIcon = document.getElementById('fabIcon');
-    fabMain.addEventListener('click', () => {
-        fabOptions.classList.toggle('open');
-        fabIcon.className = fabOptions.classList.contains('open') ? 'fa-solid fa-xmark' : 'fa-solid fa-headset';
-    });
+    // Check URL parameters for direct pairing load
+    (function checkUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        const cat = params.get('cat');
+        const flav = params.get('flavour');
+        const bud = params.get('budget');
+        if (cat && flav && bud) {
+            selections = { category: cat, flavour: flav, budget: bud };
+            if (step3NextBtn) step3NextBtn.click();
+        }
+    })();
     </script>
+
+    <!-- Reservation Modal -->
+    <div class="modal" id="reservationModal" aria-hidden="true">
+        <div class="modal-overlay modal-close"></div>
+        <div class="modal-dialog glass-dialog">
+            <button class="modal-close-btn modal-close" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header">
+                <span class="gold-subtitle">SOMMELIER RESERVATION</span>
+                <h3 class="modal-title">Book Table & Wine Experience</h3>
+            </div>
+            <form id="reservationForm" class="reservation-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="resDate"><i class="fa-regular fa-calendar-days"></i> Date</label>
+                        <input type="date" id="resDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="resTime"><i class="fa-regular fa-clock"></i> Time</label>
+                        <select id="resTime" required>
+                            <option value="06:00 PM">06:00 PM (Dinner)</option>
+                            <option value="07:30 PM" selected>07:30 PM (Dinner Prime)</option>
+                            <option value="09:00 PM">09:00 PM (Late Dining)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="resGuests"><i class="fa-solid fa-user-group"></i> Guests</label>
+                        <select id="resGuests" required>
+                            <option value="2">2 Guests</option>
+                            <option value="4" selected>4 Guests</option>
+                            <option value="6">6 Guests</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="resArea"><i class="fa-solid fa-chair"></i> Seating Area</label>
+                        <select id="resArea">
+                            <option value="Main Dining Room">Main Dining Room</option>
+                            <option value="Emerald Velvet Booth">Emerald Velvet Booth</option>
+                            <option value="Wine Cellar Vault">Wine Cellar Vault</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="resName">Full Name</label>
+                        <input type="text" id="resName" placeholder="e.g. David Vance" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="resPhone">Phone Number</label>
+                        <input type="tel" id="resPhone" placeholder="+91 83103 11290" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="resNotes">Wine & Special Requests</label>
+                    <textarea id="resNotes" rows="2" placeholder="Wine preference..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold btn-block">Confirm Reservation</button>
+            </form>
+            <div id="reservationSuccess" class="reservation-success hidden" style="text-align: center; padding: 1.5rem;">
+                <i class="fa-solid fa-circle-check" style="font-size: 3rem; color: var(--color-gold); margin-bottom: 1rem;"></i>
+                <h3>Reservation Confirmed!</h3>
+                <p>Your table & wine reservation ref <strong id="confRef">#DC-9921</strong> is locked in.</p>
+                <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 0.5rem;">We look forward to serving you at DineCraft.</p>
+                <button class="btn btn-gold modal-close" style="margin-top: 1rem;">Close Window</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Application Script -->
+    <script src="main.js"></script>
 </body>
 </html>

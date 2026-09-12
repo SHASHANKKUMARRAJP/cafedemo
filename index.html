@@ -516,8 +516,8 @@
                     <div class="vip-badge"><i class="fa-solid fa-crown"></i> VIP OFFER</div>
                     <h3 class="vip-title">Complimentary Champagne on Your First Visit</h3>
                     <p class="vip-desc">Subscribe to our exclusive mailing list and receive a complimentary bottle of Moët &amp; Chandon on your first dining experience.</p>
-                    <form class="vip-form" id="vipNewsletterForm">
-                        <input type="email" placeholder="Enter your email for VIP access..." required id="vipEmailInput">
+                    <form class="vip-form" id="vipNewsletterForm" action="vip.html" method="GET">
+                        <input type="email" name="email" placeholder="Enter your email for VIP access..." required id="vipEmailInput">
                         <button type="submit" class="btn btn-gold">
                             <i class="fa-solid fa-lock"></i> Claim VIP Access
                         </button>
@@ -665,39 +665,13 @@
         }
     })();
 
-    // VIP form
+    // VIP form redirect to vip.html
     const vipForm = document.getElementById('vipNewsletterForm');
     if (vipForm) {
         vipForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const userEmail = document.getElementById('vipEmailInput').value.trim();
-
-            // Build structured email to owner
-            const ownerEmail = 'shashankpshashank2@gmail.com';
-            const subject = encodeURIComponent('🥂 New VIP Access Request — DineCraft');
-            const body = encodeURIComponent(
-`━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🥂 NEW VIP ACCESS REQUEST — DineCraft
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-A new user has requested VIP membership access.
-
-👤 User Email: ${userEmail}
-📅 Request Date: ${new Date().toLocaleString('en-IN')}
-🎁 Offer: Complimentary Bottle of Moët & Chandon on First Visit
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Please respond to ${userEmail} with their VIP voucher.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-— DineCraft Booking System`
-            );
-
-            // Open email client with pre-filled message
-            window.location.href = `mailto:${ownerEmail}?subject=${subject}&body=${body}`;
-
-            // Show success message
-            vipForm.innerHTML = '<div style="text-align:center;padding:1rem 0"><i class="fa-solid fa-circle-check" style="color:#e2c070;font-size:2rem"></i><p style="color:#e2c070;font-weight:600;margin-top:0.5rem">🥂 Request sent! Your VIP access email has been dispatched. We\'ll confirm shortly!</p></div>';
+            window.location.href = `vip.html?email=${encodeURIComponent(userEmail)}`;
         });
     }
 
@@ -787,7 +761,7 @@ Please respond to ${userEmail} with their VIP voucher.
                     </div>
                     <div class="form-group">
                         <label for="resPhone">Phone Number</label>
-                        <input type="tel" id="resPhone" placeholder="+1 (555) 000-0000" required>
+                        <input type="tel" id="resPhone" placeholder="+91 83103 11290" required>
                     </div>
                 </div>
 
@@ -901,11 +875,11 @@ Please respond to ${userEmail} with their VIP voucher.
             <i class="fa-solid fa-headset" id="fabIcon"></i>
         </div>
         <div class="fab-options" id="fabOptions">
-            <a href="https://wa.me/15553829000" target="_blank" rel="noopener" class="fab-option fab-whatsapp" aria-label="Chat on WhatsApp">
+            <a href="https://wa.me/918310311290?text=Hello%20DineCraft%20Cafe%2C%20I%20would%20like%20to%20reserve%20a%20table" target="_blank" rel="noopener" class="fab-option fab-whatsapp" aria-label="Chat on WhatsApp">
                 <i class="fa-brands fa-whatsapp"></i>
                 <span class="fab-label">WhatsApp</span>
             </a>
-            <a href="tel:+15553829000" class="fab-option fab-call" aria-label="Call Us">
+            <a href="tel:+918310311290" class="fab-option fab-call" aria-label="Call Us">
                 <i class="fa-solid fa-phone"></i>
                 <span class="fab-label">Call Us</span>
             </a>

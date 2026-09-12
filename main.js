@@ -262,57 +262,95 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 7. Atmosphere Audio Synthesizer (Web Audio API) ---
+    // --- 7. Atmosphere Audio Engine (HTML5 Music Player + Web Audio Synthesizer) ---
     const ambientBtn = document.getElementById('ambientToggleBtn');
     const ambientStatus = document.getElementById('ambientStatus');
     const ambientIcon = document.getElementById('ambientIcon');
     const audioWaves = document.getElementById('audioWaves');
-    let audioCtx = null;
+
     let isPlayingAudio = false;
-    let oscillatorNodes = [];
+    let htmlAudio = null;
+    let audioCtx = null;
+    let masterGainNode = null;
+    let ambientNodes = [];
 
-    function startAmbientAudio() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // Initialize HTML5 Audio Element for real relaxing cafe lounge music
+    function initHtmlAudio() {
+        if (!htmlAudio) {
+            htmlAudio = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3');
+            htmlAudio.loop = true;
+            htmlAudio.volume = 0.5;
+            htmlAudio.crossOrigin = "anonymous";
+        }
+    }
+
+    async function startAmbientAudio() {
+        initHtmlAudio();
+        let htmlSuccess = false;
+
+        // 1. Play real relaxing cafe music track via HTML5 Audio
+        try {
+            htmlAudio.currentTime = htmlAudio.currentTime || 0;
+            await htmlAudio.play();
+            htmlSuccess = true;
+        } catch (e) {
+            console.warn('HTML5 Audio restricted, activating Web Audio Synthesizer fallback:', e);
         }
 
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
+        // 2. Web Audio Synthesizer (runs alongside or acts as immediate offline fallback)
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioCtx.state === 'suspended') {
+                await audioCtx.resume();
+            }
+
+            stopSynthAudio();
+
+            masterGainNode = audioCtx.createGain();
+            const targetGain = htmlSuccess ? 0.06 : 0.25; // Boost synth volume if HTML5 audio fails
+            masterGainNode.gain.setValueAtTime(0.001, audioCtx.currentTime);
+            masterGainNode.gain.exponentialRampToValueAtTime(targetGain, audioCtx.currentTime + 1.0);
+            masterGainNode.connect(audioCtx.destination);
+
+            ambientNodes = [];
+
+            // Warm Acoustic Lounge Pad (C3, E3, G3, B3, D4, G4)
+            const freqs = [130.81, 164.81, 196.00, 246.94, 293.66, 392.00];
+            freqs.forEach((freq, idx) => {
+                const osc = audioCtx.createOscillator();
+                const oscGain = audioCtx.createGain();
+                const filter = audioCtx.createBiquadFilter();
+
+                osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(500 + idx * 80, audioCtx.currentTime);
+
+                const lfo = audioCtx.createOscillator();
+                lfo.frequency.setValueAtTime(0.1 + idx * 0.03, audioCtx.currentTime);
+                const lfoGain = audioCtx.createGain();
+                lfoGain.gain.setValueAtTime(2.0, audioCtx.currentTime);
+                lfo.connect(osc.frequency);
+                lfo.start();
+                ambientNodes.push(lfo);
+
+                oscGain.gain.setValueAtTime(0.2 / freqs.length, audioCtx.currentTime);
+
+                osc.connect(filter);
+                filter.connect(oscGain);
+                oscGain.connect(masterGainNode);
+
+                osc.start();
+                ambientNodes.push(osc);
+            });
+        } catch (e) {
+            console.error('Web Audio Synth Error:', e);
         }
 
-        // Create warm ambient chord tones (C major 9 chord soft pads)
-        const frequencies = [130.81, 164.81, 196.00, 246.94, 293.66]; // C3, E3, G3, B3, D4
-        oscillatorNodes = [];
-
-        const masterGain = audioCtx.createGain();
-        masterGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-
-        frequencies.forEach(freq => {
-            const osc = audioCtx.createOscillator();
-            const oscGain = audioCtx.createGain();
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-            // Subtle LFO modulation for organic sway sound
-            const lfo = audioCtx.createOscillator();
-            lfo.frequency.setValueAtTime(0.2, audioCtx.currentTime);
-            const lfoGain = audioCtx.createGain();
-            lfoGain.gain.setValueAtTime(2.0, audioCtx.currentTime);
-
-            lfo.connect(osc.frequency);
-            lfo.start();
-
-            oscGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-
-            osc.connect(oscGain);
-            oscGain.connect(masterGain);
-            osc.start();
-
-            oscillatorNodes.push(osc);
-        });
-
-        masterGain.connect(audioCtx.destination);
         isPlayingAudio = true;
 
         if (ambientStatus) ambientStatus.textContent = 'ON';
@@ -321,14 +359,35 @@ document.addEventListener('DOMContentLoaded', () => {
             ambientIcon.style.color = 'var(--color-gold-bright)';
         }
         if (audioWaves) audioWaves.classList.add('playing');
-        showToast('Atmosphere ambient soundscape enabled.');
+        showToast('🎵 Atmosphere cafe music enabled.');
+    }
+
+    function stopSynthAudio() {
+        ambientNodes.forEach(node => {
+            try { node.stop(); } catch(e) {}
+            try { node.disconnect(); } catch(e) {}
+        });
+        ambientNodes = [];
     }
 
     function stopAmbientAudio() {
-        oscillatorNodes.forEach(osc => {
-            try { osc.stop(); } catch(e) {}
-        });
-        oscillatorNodes = [];
+        if (htmlAudio) {
+            try { htmlAudio.pause(); } catch(e) {}
+        }
+
+        if (masterGainNode && audioCtx) {
+            try {
+                masterGainNode.gain.setValueAtTime(masterGainNode.gain.value, audioCtx.currentTime);
+                masterGainNode.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+            } catch(e) {}
+
+            setTimeout(() => {
+                stopSynthAudio();
+            }, 320);
+        } else {
+            stopSynthAudio();
+        }
+
         isPlayingAudio = false;
 
         if (ambientStatus) ambientStatus.textContent = 'OFF';
@@ -340,11 +399,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (ambientBtn) {
-        ambientBtn.addEventListener('click', () => {
+        ambientBtn.addEventListener('click', async () => {
             if (isPlayingAudio) {
                 stopAmbientAudio();
             } else {
-                startAmbientAudio();
+                await startAmbientAudio();
             }
         });
     }

@@ -73,6 +73,45 @@
                         <h2 class="form-panel-title">Reservation Details</h2>
                         
                         <form id="standaloneBookingForm" class="page-reservation-form">
+                            <!-- Interactive Seating Floor Plan Visualizer -->
+                            <div class="seating-visualizer-card">
+                                <div class="seating-header-bar">
+                                    <h3 class="seating-title"><i class="fa-solid fa-chair"></i> Select Seating Atmosphere Zone</h3>
+                                    <span style="font-size: 0.8rem; color: var(--color-gold); background: rgba(212,175,55,0.15); padding: 3px 10px; border-radius: 12px; border: 1px solid var(--border-gold);"><i class="fa-solid fa-sparkles"></i> Interactive Floorplan</span>
+                                </div>
+
+                                <div class="zone-selector-grid" id="zoneSelectorGrid">
+                                    <div class="zone-card selected" data-zone="main-lounge" data-name="Fireside Main Lounge" data-desc="Warm fireplace, acoustic classic jazz ambiance, spacious seating." data-img="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=80">
+                                        <div class="zone-icon"><i class="fa-solid fa-fire-burner"></i></div>
+                                        <div class="zone-name">Fireside Main Lounge</div>
+                                        <div class="zone-desc">Warm fireplace & acoustic classic jazz.</div>
+                                    </div>
+                                    <div class="zone-card" data-zone="cellar" data-name="Sommelier Wine Cellar" data-desc="Intimate candlelit seating surrounded by vintage grand cru vault collection." data-img="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&auto=format&fit=crop&q=80">
+                                        <div class="zone-icon"><i class="fa-solid fa-wine-glass"></i></div>
+                                        <div class="zone-name">Sommelier Wine Cellar</div>
+                                        <div class="zone-desc">Intimate candlelit vault tables.</div>
+                                    </div>
+                                    <div class="zone-card" data-zone="terrace" data-name="Garden Terrace" data-desc="Al fresco dining with fountain view and heated pergolas." data-img="https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=800&auto=format&fit=crop&q=80">
+                                        <div class="zone-icon"><i class="fa-solid fa-tree"></i></div>
+                                        <div class="zone-name">Garden Terrace</div>
+                                        <div class="zone-desc">Al fresco fountain view & heated pergolas.</div>
+                                    </div>
+                                    <div class="zone-card" data-zone="chef-counter" data-name="Chef's VIP Counter" data-desc="Front-row seating viewing our Master Chefs crafting tasting courses." data-img="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80">
+                                        <div class="zone-icon"><i class="fa-solid fa-utensils"></i></div>
+                                        <div class="zone-name">Chef's VIP Counter</div>
+                                        <div class="zone-desc">Front-row view of culinary preparation.</div>
+                                    </div>
+                                </div>
+
+                                <div class="zone-preview-banner" id="zonePreviewBanner">
+                                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=80" alt="Selected Zone View" class="zone-preview-img" id="selectedZoneImg">
+                                    <div class="zone-preview-info">
+                                        <h5 id="selectedZoneName">Selected Zone: Fireside Main Lounge</h5>
+                                        <p id="selectedZoneDesc">Warm fireplace, acoustic classic jazz ambiance, spacious seating.</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Full Name -->
                             <div class="form-group-block">
                                 <label for="bkName">Full Name *</label>
@@ -87,7 +126,7 @@
                                 </div>
                                 <div class="form-group-block">
                                     <label for="bkPhone">Phone *</label>
-                                    <input type="tel" id="bkPhone" placeholder="+1 (555) 123-4567" required>
+                                    <input type="tel" id="bkPhone" placeholder="+91 83103 11290" required>
                                 </div>
                             </div>
 
@@ -131,15 +170,26 @@
                                 <span class="form-sub-note">For parties of 10 or more, please call us directly</span>
                             </div>
 
+                            <!-- Luxury Occasion Add-ons -->
+                            <div class="occasion-addons-wrapper">
+                                <label style="font-weight: 600; color: var(--color-gold-light); font-size: 0.9rem;">Enhance Your Evening (Optional Luxury Add-ons)</label>
+                                <div class="addon-pill-grid" id="addonPillGrid">
+                                    <div class="addon-checkbox-card" data-addon="Champagne on Arrival"><i class="fa-solid fa-champagne-glasses"></i> Dom Pérignon Champagne on Arrival (+$85)</div>
+                                    <div class="addon-checkbox-card" data-addon="Handcrafted Florist Arrangement"><i class="fa-solid fa-spa"></i> Fresh Rose Table Arrangement (+$45)</div>
+                                    <div class="addon-checkbox-card" data-addon="Personalized Printed Menu"><i class="fa-solid fa-scroll"></i> Personalized Printed Menu (Free)</div>
+                                    <div class="addon-checkbox-card" data-addon="Sommelier Wine Pairing"><i class="fa-solid fa-wine-bottle"></i> Pre-Reserved Sommelier Pairing Course</div>
+                                </div>
+                            </div>
+
                             <!-- Special Requests -->
-                            <div class="form-group-block">
-                                <label for="bkNotes">Special Requests</label>
-                                <textarea id="bkNotes" rows="3" placeholder="Dietary restrictions, special occasions, seating preferences..."></textarea>
+                            <div class="form-group-block" style="margin-top: 1.2rem;">
+                                <label for="bkNotes">Special Requests & Dietary Requirements</label>
+                                <textarea id="bkNotes" rows="3" placeholder="Dietary restrictions, special occasions, custom arrangements..."></textarea>
                             </div>
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-gold btn-block margin-top-md">
-                                Confirm Reservation
+                                Confirm Reservation & Send to WhatsApp
                             </button>
 
                             <span class="required-note">* Required fields</span>
@@ -148,8 +198,12 @@
                         <!-- Success Confirmation Screen (hidden by default) -->
                         <div id="pageBookingSuccess" class="booking-success-view hidden">
                             <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
-                            <h3>Table Reserved Successfully!</h3>
-                            <p>A confirmation email and SMS have been dispatched.</p>
+                            <h3>Booking Request Sent! 🎉</h3>
+                            <p>
+                                <i class="fa-brands fa-whatsapp" style="color:#25D366; font-size:1.1rem;"></i>
+                                Your reservation has been submitted. You will receive a <strong>confirmation on WhatsApp</strong> shortly.<br>
+                                <span style="font-size:0.85rem; color: var(--text-muted);">Please keep your WhatsApp active to receive your booking confirmation.</span>
+                            </p>
                             <div class="booking-summary-card">
                                 <div class="summary-line"><span>Booking Ref:</span> <strong id="pConfRef">#DC-8492</strong></div>
                                 <div class="summary-line"><span>Guest Name:</span> <strong id="pConfName">John Doe</strong></div>
@@ -258,7 +312,39 @@
         </div>
     </footer>
 
+    <!-- WhatsApp / Call Floating Action Button -->
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-main" id="fabMain" title="Contact Us">
+            <i class="fa-solid fa-headset" id="fabIcon"></i>
+        </div>
+        <div class="fab-options" id="fabOptions">
+            <a href="https://wa.me/918310311290?text=Hello%20DineCraft%20Cafe%2C%20I%20would%20like%20to%20reserve%20a%20table" target="_blank" rel="noopener" class="fab-option fab-whatsapp" title="Chat on WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span class="fab-label">WhatsApp</span>
+            </a>
+            <a href="tel:+918310311290" class="fab-option fab-call" title="Call Us">
+                <i class="fa-solid fa-phone"></i>
+                <span class="fab-label">Call Us</span>
+            </a>
+            <a href="booking.html" class="fab-option fab-reserve" title="Reserve a Table">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span class="fab-label">Reserve</span>
+            </a>
+        </div>
+    </div>
+
     <!-- Interactive Script for Booking -->
     <script src="booking.js"></script>
+    <script>
+        const fabMain = document.getElementById('fabMain');
+        const fabOptions = document.getElementById('fabOptions');
+        const fabIcon = document.getElementById('fabIcon');
+        if (fabMain) {
+            fabMain.addEventListener('click', () => {
+                const isOpen = fabOptions.classList.toggle('open');
+                if (fabIcon) fabIcon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-headset';
+            });
+        }
+    </script>
 </body>
 </html>

@@ -83,6 +83,16 @@
                     </div>
                 </div>
 
+                <!-- Dietary & Allergen Quick Filter Bar -->
+                <div class="dietary-filter-bar" id="dietaryFilterBar">
+                    <span class="dietary-label"><i class="fa-solid fa-filter"></i> Dietary Filter:</span>
+                    <button class="dietary-pill active" data-dietary="all"><i class="fa-solid fa-border-all"></i> All Preferences</button>
+                    <button class="dietary-pill" data-dietary="vegetarian"><i class="fa-solid fa-seedling"></i> Vegetarian</button>
+                    <button class="dietary-pill" data-dietary="gluten-free"><i class="fa-solid fa-wheat-awn-circle-exclamation"></i> Gluten-Free</button>
+                    <button class="dietary-pill" data-dietary="signature"><i class="fa-solid fa-crown"></i> Chef's Signature</button>
+                    <button class="dietary-pill" data-dietary="organic"><i class="fa-solid fa-leaf"></i> Organic / Artisanal</button>
+                </div>
+
                 <!-- Menu Cards Grid -->
                 <div class="menu-cards-grid" id="menuCardsGrid">
                     <!-- Dishes dynamically rendered & filtered by JS -->
@@ -130,8 +140,8 @@
                         <h4 class="footer-heading">Contact Us</h4>
                         <ul class="contact-info">
                             <li><i class="fa-solid fa-location-dot"></i> 123 Culinary Street, New York, NY 10001</li>
-                            <li><i class="fa-solid fa-phone"></i> +1 (212) 555-1234</li>
-                            <li><i class="fa-solid fa-envelope"></i> info@dinecraft.com</li>
+                            <li><i class="fa-solid fa-phone"></i> +91 83103 11290</li>
+                            <li><i class="fa-solid fa-envelope"></i> shashankpshashank2@gmail.com</li>
                         </ul>
                     </div>
                 </div>
@@ -150,7 +160,39 @@
         </div>
     </footer>
 
+    <!-- WhatsApp / Call Floating Action Button -->
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-main" id="fabMain" title="Contact Us">
+            <i class="fa-solid fa-headset" id="fabIcon"></i>
+        </div>
+        <div class="fab-options" id="fabOptions">
+            <a href="https://wa.me/918310311290?text=Hello%20DineCraft%20Cafe%2C%20I%20would%20like%20to%20reserve%20a%20table" target="_blank" rel="noopener" class="fab-option fab-whatsapp" title="Chat on WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span class="fab-label">WhatsApp</span>
+            </a>
+            <a href="tel:+918310311290" class="fab-option fab-call" title="Call Us">
+                <i class="fa-solid fa-phone"></i>
+                <span class="fab-label">Call Us</span>
+            </a>
+            <a href="booking.html" class="fab-option fab-reserve" title="Reserve a Table">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span class="fab-label">Reserve</span>
+            </a>
+        </div>
+    </div>
+
     <!-- Interactive Script for Menu -->
     <script src="menu.js"></script>
+    <script>
+        const fabMain = document.getElementById('fabMain');
+        const fabOptions = document.getElementById('fabOptions');
+        const fabIcon = document.getElementById('fabIcon');
+        if (fabMain) {
+            fabMain.addEventListener('click', () => {
+                const isOpen = fabOptions.classList.toggle('open');
+                if (fabIcon) fabIcon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-headset';
+            });
+        }
+    </script>
 </body>
 </html>
